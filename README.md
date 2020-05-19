@@ -1,5 +1,5 @@
 
-# Android clean architecture sample
+# Android clean architecture sample [![Build Status](https://travis-ci.org/3383389/CleanArchitectureSample.svg?branch=master)](https://travis-ci.com/3383389/CleanArchitectureSample)
 The application which allows user to review the list of movies and add them to favorites in offline mode:
 
 ### Technical characteristics
