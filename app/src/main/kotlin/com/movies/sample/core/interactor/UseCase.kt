@@ -1,8 +1,5 @@
 package com.movies.sample.core.interactor
 
-import com.movies.sample.core.exception.Failure
-import com.movies.sample.core.functional.Either
-import kotlinx.coroutines.*
 
 /**
  * Abstract class for a Use Case (Interactor in terms of Clean Architecture).
@@ -12,16 +9,11 @@ import kotlinx.coroutines.*
  * By convention each [UseCase] implementation will execute its job in a background thread
  * (kotlin coroutine) and will post the result in the UI thread.
  */
-abstract class UseCase<out Type, in Params> where Type : Any {
+abstract class UseCase<out Type, in Params> where Type : Any? {
 
-    abstract suspend fun run(params: Params): Either<Failure, Type>
+    abstract suspend fun run(params: Params): Result<Type>
 
-    operator fun invoke(scope: CoroutineScope, params: Params, onResult: (Either<Failure, Type>) -> Unit = {}) {
-        val job = scope.async(Dispatchers.IO) { run(params) }
-        scope.launch(Dispatchers.Main) {
-            onResult(job.await())
-        }
-    }
+    suspend operator fun invoke(params: Params, onResult: (Result<Type>) -> Unit = {}) = onResult(run(params))
 
     class None
 }

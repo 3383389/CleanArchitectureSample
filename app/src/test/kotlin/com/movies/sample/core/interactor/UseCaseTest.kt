@@ -41,7 +41,7 @@ class UseCaseTest : AndroidTest() {
     data class MyType(val name: String)
     data class MyParams(val name: String)
 
-    private inner class MyUseCase : UseCase<MyType, MyParams>() {
+    private inner class MyUseCase : UseCaseEither<MyType, MyParams>() {
         override suspend fun run(params: MyParams) = Right(MyType(TYPE_TEST))
     }
 }

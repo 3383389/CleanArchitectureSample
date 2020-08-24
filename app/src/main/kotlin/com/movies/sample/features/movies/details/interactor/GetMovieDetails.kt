@@ -1,7 +1,6 @@
 package com.movies.sample.features.movies.details.interactor
 
-import com.movies.sample.core.exception.Failure
-import com.movies.sample.core.functional.Either
+import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.interactor.UseCase
 import com.movies.sample.features.movies.details.MovieDetailsEntity
 import com.movies.sample.features.movies.details.interactor.GetMovieDetails.Params
@@ -11,7 +10,7 @@ import javax.inject.Inject
 class GetMovieDetails
 @Inject constructor(private val moviesRepository: MoviesRepository) : UseCase<MovieDetailsEntity, Params>() {
 
-    override suspend fun run(params: Params): Either<Failure, MovieDetailsEntity> {
+    override suspend fun run(params: Params): Result<MovieDetailsEntity> {
         return moviesRepository.movieDetails(params.id)
     }
 

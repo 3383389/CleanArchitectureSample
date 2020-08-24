@@ -1,26 +1,28 @@
 package com.movies.sample.features.movies.moviesList
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.movies.sample.core.exception.Failure
-import com.movies.sample.core.functional.Either
-import com.movies.sample.core.interactor.UseCase.None
+import com.movies.sample.core.interactor.Result
+import com.movies.sample.core.interactor.UseCase
 import com.movies.sample.core.platform.BaseViewModel
 import com.movies.sample.features.movies.moviesList.interactor.AddMovieToFavorites
 import com.movies.sample.features.movies.moviesList.interactor.GetFavoriteMovies
 import com.movies.sample.features.movies.moviesList.interactor.GetLocalMovies
 import com.movies.sample.features.movies.moviesList.interactor.UpdateMovies
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MoviesViewModel
 @Inject constructor(
+    application: Application,
     private val getLocalMovies: GetLocalMovies,
     private val updateMovies: UpdateMovies,
     private val getFavoriteMovies: GetFavoriteMovies,
     private val addMovieToFavorites: AddMovieToFavorites,
     private val removeMovieFromFavorites: RemoveMovieFromFavorites
-) : BaseViewModel() {
+) : BaseViewModel(application) {
 
     lateinit var movies: LiveData<List<MovieEntity>>
 
@@ -34,18 +36,36 @@ class MoviesViewModel
     fun initMoviesLiveData() {
         when (state) {
             MoviesFragment.STATE_MOVIES ->
-                getLocalMovies(viewModelScope, None()) {
-                    it.fold(::handleFailure, ::handleMovieList)
+                viewModelScope.launch {
+                    getLocalMovies(UseCase.None()) {
+                        when (it) {
+                            is Result.Success -> handleMovieList(it.data)
+                            is Result.Error -> handleErrors(it) { initMoviesLiveData() }
+                        }
+                    }
                 }
             MoviesFragment.STATE_MOVIES_FAVORITES ->
-                getFavoriteMovies(viewModelScope, None()) {
-                    it.fold(::handleFailure, ::handleMovieList)
+                viewModelScope.launch {
+                    getFavoriteMovies(UseCase.None()) {
+                        when (it) {
+                            is Result.Success -> handleMovieList(it.data)
+                            is Result.Error -> handleErrors(it) { initMoviesLiveData() }
+                        }
+                    }
                 }
         }
+
     }
 
-    fun loadMovies() =
-        updateMovies(viewModelScope, None()) { if (it.isLeft) handleFailure((it as Either.Left<Failure>).a) }
+    fun loadMovies() {
+        viewModelScope.launch {
+            updateMovies(UseCase.None()) {
+                when (it) {
+                    is Result.Error -> handleErrors(it) { loadMovies() }
+                }
+            }
+        }
+    }
 
     private fun handleMovieList(movies: LiveData<List<MovieEntity>>) {
         this.movies = movies
@@ -54,23 +74,33 @@ class MoviesViewModel
 
     fun onFavoritesClicked(movie: MovieEntity) {
         if (movie.isFavorite) {
-            removeMovieFromFavorites(movie)
+            removeMovieFromFavorites(movie.id)
         } else {
             addFavorites(movie)
         }
     }
 
     private fun addFavorites(movie: MovieEntity) {
-        addMovieToFavorites(
-            viewModelScope,
-            AddMovieToFavorites.Params(movie)
-        ) { if (it.isLeft) handleFailure((it as Either.Left<Failure>).a) }
+        viewModelScope.launch {
+            addMovieToFavorites(AddMovieToFavorites.Params(movie)) {
+                when (it) {
+                    is Result.Success -> {
+                    }
+                    is Result.Error -> handleErrors(it) { addFavorites(movie) }
+                }
+            }
+        }
     }
 
-    private fun removeMovieFromFavorites(movie: MovieEntity) {
-        removeMovieFromFavorites(
-            viewModelScope,
-            RemoveMovieFromFavorites.Params(movie.id)
-        ) { if (it.isLeft) handleFailure((it as Either.Left<Failure>).a) }
+    private fun removeMovieFromFavorites(movieId: Int) {
+        viewModelScope.launch {
+            removeMovieFromFavorites(RemoveMovieFromFavorites.Params(movieId)) {
+                when (it) {
+                    is Result.Success -> {
+                    }
+                    is Result.Error -> handleErrors(it) { removeMovieFromFavorites(movieId) }
+                }
+            }
+        }
     }
 }

@@ -1,5 +1,8 @@
 package com.movies.sample.features.movies.repository.network
 
+import com.movies.sample.features.movies.repository.dto.RetrofitMovie
+import com.movies.sample.features.movies.repository.dto.RetrofitMovieDetails
+import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -9,6 +12,11 @@ class MoviesService
 @Inject constructor(retrofit: Retrofit) : MoviesApi {
     private val moviesApi by lazy { retrofit.create(MoviesApi::class.java) }
 
-    override fun movies() = moviesApi.movies()
-    override fun movieDetails(movieId: Int) = moviesApi.movieDetails(movieId)
+    override fun movies(): Deferred<List<RetrofitMovie>> {
+        return moviesApi.movies()
+    }
+
+    override fun movieDetails(movieId: Int): Deferred<RetrofitMovieDetails> {
+        return moviesApi.movieDetails(movieId)
+    }
 }

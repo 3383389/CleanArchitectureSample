@@ -3,7 +3,7 @@ package com.movies.sample.features.movies
 import androidx.lifecycle.MutableLiveData
 import com.movies.sample.UnitTest
 import com.movies.sample.core.functional.Either.Right
-import com.movies.sample.core.interactor.UseCase
+import com.movies.sample.core.interactor.UseCaseEither
 import com.movies.sample.features.movies.moviesList.interactor.GetLocalMovies
 import com.movies.sample.features.movies.moviesList.MovieEntity
 import com.movies.sample.features.movies.repository.MoviesRepository
@@ -32,7 +32,7 @@ class GetMoviesTest : UnitTest() {
 
     @Test
     fun `should get data from repository`() {
-        runBlocking { getMovies.run(UseCase.None()) }
+        runBlocking { getMovies.run(UseCaseEither.None()) }
 
         verify(moviesRepository).localMovies()
         verifyNoMoreInteractions(moviesRepository)

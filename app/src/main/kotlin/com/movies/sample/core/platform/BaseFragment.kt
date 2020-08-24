@@ -30,7 +30,7 @@ abstract class BaseFragment : androidx.fragment.app.Fragment() {
         (activity?.application as AndroidApplication).appComponent
     }
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(layoutId(), container, false)
