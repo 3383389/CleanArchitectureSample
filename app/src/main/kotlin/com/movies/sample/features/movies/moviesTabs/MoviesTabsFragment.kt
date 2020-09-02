@@ -17,15 +17,12 @@ class MoviesTabsFragment : BaseFragment() {
     lateinit var navigator: Navigator
 
     lateinit var pagerAdapter: BaseViewPagerAdapter
-    private lateinit var moviesViewModel: MoviesTabsViewModel
 
     override fun layoutId() = R.layout.fragment_movies_tabs
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
-
-        moviesViewModel = viewModel(viewModelFactory) {}
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

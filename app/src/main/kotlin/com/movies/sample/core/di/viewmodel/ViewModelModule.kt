@@ -4,7 +4,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.movies.sample.features.movies.details.MovieDetailsViewModel
 import com.movies.sample.features.movies.moviesList.MoviesViewModel
-import com.movies.sample.features.movies.moviesTabs.MoviesTabsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -23,9 +22,4 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MovieDetailsViewModel::class)
     abstract fun bindsMovieDetailsViewModel(movieDetailsViewModel: MovieDetailsViewModel): AndroidViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(MoviesTabsViewModel::class)
-    abstract fun bindsMovieTabsViewModel(moviesTabsViewModel: MoviesTabsViewModel): AndroidViewModel
 }
