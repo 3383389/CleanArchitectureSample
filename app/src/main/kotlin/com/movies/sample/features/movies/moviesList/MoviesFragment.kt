@@ -33,7 +33,7 @@ class MoviesFragment : BaseFragment() {
         appComponent.inject(this)
 
         moviesViewModel = viewModel(viewModelFactory) {
-            observe(moviesVariableInitialized, ::subscribeOnMovies)
+            observe(moviesMediatorLiveData, ::renderMoviesList)
             failure(failure, ::handleFailure)
             changeState(arguments?.getString(PARAM_STATE) ?: STATE_MOVIES)
             initMoviesLiveData()
@@ -86,13 +86,6 @@ class MoviesFragment : BaseFragment() {
         movieList.visible()
         showProgress()
         moviesViewModel.loadMovies()
-    }
-
-    private fun subscribeOnMovies(isVarInitialized: Boolean?) {
-        if (isVarInitialized == true) {
-            observe(moviesViewModel.movies, ::renderMoviesList)
-            moviesViewModel.moviesVariableInitialized.removeObservers(this)
-        }
     }
 
     private fun renderMoviesList(movies: List<MovieEntity>?) {

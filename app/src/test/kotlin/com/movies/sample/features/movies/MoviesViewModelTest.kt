@@ -53,9 +53,9 @@ class MoviesViewModelTest : AndroidTest() {
         )
         given { runBlocking { getLocalMovies.run(eq(any())) } }.willReturn(Result.Success(MutableLiveData(moviesList)))
 
-        moviesViewModel.moviesVariableInitialized.observeForever { isInitialized ->
+        moviesViewModel.moviesLiveDataInitialized.observeForever { isInitialized ->
             if (isInitialized == true) {
-                moviesViewModel.movies.observeForever {
+                moviesViewModel.moviesMediatorLiveData.observeForever {
                     it!!.size shouldEqualTo 2
                     it[0].id shouldEqualTo 0
                     it[0].poster shouldEqualTo "IronMan"

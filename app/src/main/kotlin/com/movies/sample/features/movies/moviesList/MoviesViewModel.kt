@@ -2,6 +2,7 @@ package com.movies.sample.features.movies.moviesList
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.movies.sample.core.interactor.Result
@@ -14,6 +15,7 @@ import com.movies.sample.features.movies.moviesList.interactor.UpdateMovies
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 class MoviesViewModel
 @Inject constructor(
     application: Application,
@@ -24,10 +26,11 @@ class MoviesViewModel
     private val removeMovieFromFavorites: RemoveMovieFromFavorites
 ) : BaseViewModel(application) {
 
-    lateinit var movies: LiveData<List<MovieEntity>>
+    private lateinit var _movies: LiveData<List<MovieEntity>>
+    val moviesMediatorLiveData = MediatorLiveData<List<MovieEntity>>()
 
-    var state: String = MoviesFragment.STATE_MOVIES // state by default
-    val moviesVariableInitialized = MutableLiveData<Boolean>(false)
+    private var state: String = MoviesFragment.STATE_MOVIES // state by default
+    val moviesLiveDataInitialized = MutableLiveData<Boolean>(false)
 
     fun changeState(state: String) {
         this.state = state
@@ -68,8 +71,8 @@ class MoviesViewModel
     }
 
     private fun handleMovieList(movies: LiveData<List<MovieEntity>>) {
-        this.movies = movies
-        moviesVariableInitialized.value = true
+        this._movies = movies
+        moviesMediatorLiveData.addSource(_movies) { moviesMediatorLiveData.value = it }
     }
 
     fun onFavoritesClicked(movie: MovieEntity) {
