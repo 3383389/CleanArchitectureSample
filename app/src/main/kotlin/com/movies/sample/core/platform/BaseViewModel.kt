@@ -20,10 +20,6 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
 
     var failure: MutableLiveData<Failure> = MutableLiveData()
 
-    protected fun handleFailure(failure: Failure) {
-        this.failure.value = failure
-    }
-
     protected fun handleErrors(
         result: Result.Error,
         retryListener: (() -> Unit)? = null
@@ -57,7 +53,6 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
         cancelListener: (() -> Unit)? = null,
         retryListener: (() -> Unit)? = null
     ) {
-        // if no dialog show toast
         message?.let {
             (getApplication() as AndroidApplication).toast(it)
         }

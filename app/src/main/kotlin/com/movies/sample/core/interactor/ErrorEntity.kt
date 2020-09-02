@@ -17,4 +17,6 @@ sealed class ErrorEntity (open val message: String? = null) {
     object Cancelled : ErrorEntity()
 
     object Unknown : ErrorEntity()
+
+    object UnknownServiceError : ErrorEntity()
 }

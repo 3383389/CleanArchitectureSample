@@ -1,14 +1,15 @@
 package com.movies.sample.features.movies
 
+import android.app.Application
 import com.movies.sample.AndroidTest
-import com.movies.sample.core.functional.Either.Right
-import com.movies.sample.features.movies.details.interactor.GetMovieDetails
+import com.movies.sample.core.interactor.Result
 import com.movies.sample.features.movies.details.MovieDetailsEntity
 import com.movies.sample.features.movies.details.MovieDetailsViewModel
+import com.movies.sample.features.movies.details.interactor.GetMovieDetails
 import com.movies.sample.features.movies.details.interactor.PlayMovie
+import com.movies.sample.features.movies.moviesList.RemoveMovieFromFavorites
 import com.movies.sample.features.movies.moviesList.interactor.AddMovieToFavorites
 import com.movies.sample.features.movies.moviesList.interactor.IsMovieFavorite
-import com.movies.sample.features.movies.moviesList.RemoveMovieFromFavorites
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.given
@@ -24,23 +25,28 @@ class MovieDetailsViewModelTest : AndroidTest() {
 
     @Mock
     private lateinit var getMovieDetails: GetMovieDetails
+
     @Mock
     private lateinit var isMovieFavorite: IsMovieFavorite
+
     @Mock
     private lateinit var playMovie: PlayMovie
+
     @Mock
     private lateinit var addMovieToFavorites: AddMovieToFavorites
+
     @Mock
     private lateinit var removeMovieFromFavorites: RemoveMovieFromFavorites
 
     @Before
     fun setUp() {
         movieDetailsViewModel = MovieDetailsViewModel(
-            getMovieDetails,
-            isMovieFavorite,
-            playMovie,
-            addMovieToFavorites,
-            removeMovieFromFavorites
+            application = context() as Application,
+            getMovieDetails = getMovieDetails,
+            isMovieFavorite = isMovieFavorite,
+            playMovie = playMovie,
+            addMovieToFavorites = addMovieToFavorites,
+            removeMovieFromFavorites = removeMovieFromFavorites
         )
     }
 
@@ -56,7 +62,7 @@ class MovieDetailsViewModelTest : AndroidTest() {
             2018,
             "trailer"
         )
-        given { runBlocking { getMovieDetails.run(eq(any())) } }.willReturn(Right(movieDetails))
+        given { runBlocking { getMovieDetails.run(eq(any())) } }.willReturn(Result.Success(movieDetails))
 
         movieDetailsViewModel.movieDetails.observeForever {
             with(it!!) {

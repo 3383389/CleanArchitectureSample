@@ -9,6 +9,7 @@ import com.movies.sample.core.platform.NetworkHandler
 import com.movies.sample.features.movies.details.MovieDetailsEntity
 import com.movies.sample.features.movies.moviesList.MovieEntity
 import com.movies.sample.features.movies.repository.db.MoviesDao
+import com.movies.sample.features.movies.repository.dto.RetrofitMovie
 import com.movies.sample.features.movies.repository.network.MoviesService
 import javax.inject.Inject
 
@@ -25,8 +26,10 @@ class MoviesRepositoryImpl
             return Result.Error(ErrorEntity.Network)
         }
         return try {
-            val resultList = service.movies().await().map { movie -> movie.toRoomMovie() }
-            database.insertMovies(resultList)
+            val resultList = service.movies().await()?.map { movie -> movie?.toRoomMovie() ?: RetrofitMovie.empty().toRoomMovie() }
+            if (resultList != null) {
+                database.insertMovies(resultList)
+            }
             Result.Success(true)
         } catch (throwable: Throwable) {
             Result.Error(errorHandler.getError(throwable))
@@ -87,7 +90,7 @@ class MoviesRepositoryImpl
         }
         return try {
             val res = service.movieDetails(movieId).await()
-            Result.Success(res.toMovieDetails())
+            Result.Success(res?.toMovieDetails() ?: MovieDetailsEntity.empty())
         } catch (throwable: Throwable) {
             Result.Error(errorHandler.getError(throwable))
         }

@@ -5,4 +5,8 @@ import com.movies.sample.features.movies.moviesList.MovieEntity
 data class RetrofitMovie(private val id: Int, private val poster: String) {
     fun toMovie() = MovieEntity(id, poster, false) // todo
     fun toRoomMovie() = RoomMovie(id = id, poster = poster)
+
+    companion object {
+        fun empty() = RetrofitMovie(-1, "")
+    }
 }

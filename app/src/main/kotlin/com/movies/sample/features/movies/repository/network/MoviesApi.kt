@@ -9,10 +9,10 @@ import retrofit2.http.Path
 internal interface MoviesApi {
 
     @GET(MOVIES)
-    fun movies(): Deferred<List<RetrofitMovie>>
+    fun movies(): Deferred<List<RetrofitMovie?>?>
 
     @GET(MOVIE_DETAILS)
-    fun movieDetails(@Path(PARAM_MOVIE_ID) movieId: Int): Deferred<RetrofitMovieDetails>
+    fun movieDetails(@Path(PARAM_MOVIE_ID) movieId: Int): Deferred<RetrofitMovieDetails?>
 
     companion object {
         private const val PARAM_MOVIE_ID = "movieId"

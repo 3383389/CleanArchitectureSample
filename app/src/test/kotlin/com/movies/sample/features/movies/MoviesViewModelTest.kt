@@ -1,8 +1,9 @@
 package com.movies.sample.features.movies
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.movies.sample.AndroidTest
-import com.movies.sample.core.functional.Either.Right
+import com.movies.sample.core.interactor.Result
 import com.movies.sample.features.movies.moviesList.*
 import com.movies.sample.features.movies.moviesList.interactor.AddMovieToFavorites
 import com.movies.sample.features.movies.moviesList.interactor.GetFavoriteMovies
@@ -35,6 +36,7 @@ class MoviesViewModelTest : AndroidTest() {
     @Before
     fun setUp() {
         moviesViewModel = MoviesViewModel(
+            context() as Application,
             getLocalMovies,
             updateMovies,
             getFavoriteMovies,
@@ -49,7 +51,7 @@ class MoviesViewModelTest : AndroidTest() {
             MovieEntity(0, "IronMan", false),
             MovieEntity(1, "Batman", true)
         )
-        given { runBlocking { getLocalMovies.run(eq(any())) } }.willReturn(Right(MutableLiveData(moviesList)))
+        given { runBlocking { getLocalMovies.run(eq(any())) } }.willReturn(Result.Success(MutableLiveData(moviesList)))
 
         moviesViewModel.moviesVariableInitialized.observeForever { isInitialized ->
             if (isInitialized == true) {

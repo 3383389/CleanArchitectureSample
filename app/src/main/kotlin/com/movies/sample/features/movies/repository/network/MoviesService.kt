@@ -12,11 +12,11 @@ class MoviesService
 @Inject constructor(retrofit: Retrofit) : MoviesApi {
     private val moviesApi by lazy { retrofit.create(MoviesApi::class.java) }
 
-    override fun movies(): Deferred<List<RetrofitMovie>> {
+    override fun movies(): Deferred<List<RetrofitMovie?>?> {
         return moviesApi.movies()
     }
 
-    override fun movieDetails(movieId: Int): Deferred<RetrofitMovieDetails> {
+    override fun movieDetails(movieId: Int): Deferred<RetrofitMovieDetails?> {
         return moviesApi.movieDetails(movieId)
     }
 }

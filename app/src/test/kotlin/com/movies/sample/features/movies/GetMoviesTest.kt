@@ -2,10 +2,10 @@ package com.movies.sample.features.movies
 
 import androidx.lifecycle.MutableLiveData
 import com.movies.sample.UnitTest
-import com.movies.sample.core.functional.Either.Right
-import com.movies.sample.core.interactor.UseCaseEither
-import com.movies.sample.features.movies.moviesList.interactor.GetLocalMovies
+import com.movies.sample.core.interactor.Result
+import com.movies.sample.core.interactor.UseCase
 import com.movies.sample.features.movies.moviesList.MovieEntity
+import com.movies.sample.features.movies.moviesList.interactor.GetLocalMovies
 import com.movies.sample.features.movies.repository.MoviesRepository
 import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.verify
@@ -27,12 +27,12 @@ class GetMoviesTest : UnitTest() {
         getMovies = GetLocalMovies(
             moviesRepository
         )
-        given { moviesRepository.localMovies() }.willReturn(Right(MutableLiveData(listOf(MovieEntity.empty()))))
+        given { moviesRepository.localMovies() }.willReturn(Result.Success(MutableLiveData(listOf(MovieEntity.empty()))))
     }
 
     @Test
     fun `should get data from repository`() {
-        runBlocking { getMovies.run(UseCaseEither.None()) }
+        runBlocking { getMovies.run(UseCase.None()) }
 
         verify(moviesRepository).localMovies()
         verifyNoMoreInteractions(moviesRepository)

@@ -30,7 +30,7 @@ class GeneralErrorHandlerImpl : ErrorHandler {
                     HttpURLConnection.HTTP_BAD_REQUEST -> ErrorEntity.BadRequest(parseMessage(throwable))
 
                     // all the others will be treated as unknown error
-                    else -> ErrorEntity.Unknown
+                    else -> ErrorEntity.UnknownServiceError
                 }
             }
             else -> ErrorEntity.Unknown

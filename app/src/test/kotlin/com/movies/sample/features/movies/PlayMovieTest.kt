@@ -1,11 +1,10 @@
 package com.movies.sample.features.movies
 
-import androidx.lifecycle.viewModelScope
 import com.movies.sample.AndroidTest
 import com.movies.sample.core.navigation.Navigator
-import com.movies.sample.core.platform.TestViewModel
 import com.movies.sample.features.movies.details.interactor.PlayMovie
 import com.nhaarman.mockito_kotlin.verify
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -27,9 +26,8 @@ class PlayMovieTest : AndroidTest() {
 
     @Test fun `should play movie trailer`() {
         val params = PlayMovie.Params(VIDEO_URL)
-        val viewModel = TestViewModel()
 
-        playMovie(viewModel.viewModelScope, params)
+        runBlocking { playMovie(params) }
 
         verify(navigator).openVideo(context, VIDEO_URL)
     }
