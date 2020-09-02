@@ -18,7 +18,16 @@ import com.movies.sample.core.interactor.Result
  */
 abstract class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
+    var progressVisibility: MutableLiveData<Boolean> = MutableLiveData(false)
     var failure: MutableLiveData<Failure> = MutableLiveData()
+
+    protected fun showLoading() {
+        progressVisibility.postValue(true)
+    }
+
+    protected fun hideLoading() {
+        progressVisibility.postValue(false)
+    }
 
     protected fun handleErrors(
         result: Result.Error,

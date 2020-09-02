@@ -34,6 +34,7 @@ class MoviesFragment : BaseFragment() {
 
         moviesViewModel = viewModel(viewModelFactory) {
             observe(moviesMediatorLiveData, ::renderMoviesList)
+            observe(progressVisibility, ::setProgressVisibility)
             failure(failure, ::handleFailure)
             changeState(arguments?.getString(PARAM_STATE) ?: STATE_MOVIES)
             initMoviesLiveData()
@@ -84,13 +85,11 @@ class MoviesFragment : BaseFragment() {
     private fun loadMoviesList() {
         emptyView.invisible()
         movieList.visible()
-        showProgress()
         moviesViewModel.loadMovies()
     }
 
     private fun renderMoviesList(movies: List<MovieEntity>?) {
         moviesAdapter.collection = movies.orEmpty()
-        hideProgress()
     }
 
     private fun handleFailure(failure: Failure?) {
@@ -102,7 +101,6 @@ class MoviesFragment : BaseFragment() {
     }
 
     private fun renderFailure(@StringRes message: Int) {
-        hideProgress()
         notifyWithAction(message, R.string.action_refresh, ::loadMoviesList)
     }
 

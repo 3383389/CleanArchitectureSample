@@ -12,6 +12,7 @@ import com.movies.sample.features.movies.moviesList.interactor.AddMovieToFavorit
 import com.movies.sample.features.movies.moviesList.interactor.GetFavoriteMovies
 import com.movies.sample.features.movies.moviesList.interactor.GetLocalMovies
 import com.movies.sample.features.movies.moviesList.interactor.UpdateMovies
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -62,10 +63,13 @@ class MoviesViewModel
 
     fun loadMovies() {
         viewModelScope.launch {
+            showLoading()
+            delay(2222)
             updateMovies(UseCase.None()) {
                 when (it) {
                     is Result.Error -> handleErrors(it) { loadMovies() }
                 }
+                hideLoading()
             }
         }
     }

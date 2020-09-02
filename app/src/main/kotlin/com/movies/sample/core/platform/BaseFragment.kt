@@ -1,20 +1,22 @@
 package com.movies.sample.core.platform
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.annotation.StringRes
-import com.google.android.material.snackbar.Snackbar
-import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.movies.sample.AndroidApplication
 import com.movies.sample.R.color
 import com.movies.sample.core.di.ApplicationComponent
 import com.movies.sample.core.extension.appContext
+import com.movies.sample.core.extension.falseIfNull
+import com.movies.sample.core.extension.observe
 import com.movies.sample.core.extension.viewContainer
-import kotlinx.android.synthetic.main.toolbar.progress
+import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
 
 /**
@@ -24,14 +26,15 @@ import javax.inject.Inject
  */
 abstract class BaseFragment : androidx.fragment.app.Fragment() {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     val appComponent: ApplicationComponent by lazy(mode = LazyThreadSafetyMode.NONE) {
         (activity?.application as AndroidApplication).appComponent
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-            inflater.inflate(layoutId(), container, false)
+        inflater.inflate(layoutId(), container, false)
 
     open fun onBackPressed() {}
 
@@ -39,21 +42,36 @@ abstract class BaseFragment : androidx.fragment.app.Fragment() {
 
     internal fun firstTimeCreated(savedInstanceState: Bundle?) = savedInstanceState == null
 
-    internal fun showProgress() = progressStatus(View.VISIBLE)
-
-    internal fun hideProgress() = progressStatus(View.GONE)
+//    internal fun showProgress() = progressStatus(View.VISIBLE)
+//
+//    internal fun hideProgress() {
+////        progressStatus(View.GONE)
+//    }
 
     internal fun notify(@StringRes message: Int) =
-            Snackbar.make(viewContainer, message, Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(viewContainer, message, Snackbar.LENGTH_SHORT).show()
 
     internal fun notifyWithAction(@StringRes message: Int, @StringRes actionText: Int, action: () -> Any) {
         val snackBar = Snackbar.make(viewContainer, message, Snackbar.LENGTH_INDEFINITE)
         snackBar.setAction(actionText) { _ -> action.invoke() }
-        snackBar.setActionTextColor(ContextCompat.getColor(appContext,
-                color.colorTextPrimary))
+        snackBar.setActionTextColor(
+            ContextCompat.getColor(
+                appContext,
+                color.colorTextPrimary
+            )
+        )
         snackBar.show()
     }
 
     private fun progressStatus(viewStatus: Int) =
         with(activity) { if (this is BaseActivity) this.progress.visibility = viewStatus }
+
+
+    protected fun setProgressVisibility(visible: Boolean?) {
+        with(activity) {
+            if (this is BaseActivity) this.progress.visibility =
+                if (visible.falseIfNull()) View.VISIBLE
+                else View.INVISIBLE
+        }
+    }
 }
