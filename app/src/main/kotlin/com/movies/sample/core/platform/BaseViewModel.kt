@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.movies.sample.AndroidApplication
 import com.movies.sample.core.exception.Failure
 import com.movies.sample.core.extension.toast
-import com.movies.sample.core.interactor.ErrorEntity
+import com.movies.sample.core.exception.ErrorEntity
 import com.movies.sample.core.interactor.Result
 
 /**

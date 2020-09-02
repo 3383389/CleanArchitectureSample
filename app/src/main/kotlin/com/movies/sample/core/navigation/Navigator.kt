@@ -40,9 +40,6 @@ class Navigator
         activity.startActivityForResult(intent, MoviesActivity.MOVIE_DETAILS_REQUEST_CODE, activityOptions.toBundle())
     }
 
-    private val VIDEO_URL_HTTP = "http://www.youtube.com/watch?v="
-    private val VIDEO_URL_HTTPS = "https://www.youtube.com/watch?v="
-
     fun openVideo(context: Context, videoUrl: String) {
         try {
             context.startActivity(createYoutubeIntent(videoUrl))
@@ -69,6 +66,11 @@ class Navigator
     }
 
     class Extras(val transitionSharedElement: Array<Pair<View, String>>)
+
+    companion object {
+        private const val VIDEO_URL_HTTP = "http://www.youtube.com/watch?v="
+        private const val VIDEO_URL_HTTPS = "https://www.youtube.com/watch?v="
+    }
 }
 
 

@@ -1,5 +1,7 @@
 package com.movies.sample.core.interactor
 
+import com.movies.sample.core.exception.ErrorEntity
+
 /**
  * A generic class that holds a value with its loading status.
  * @param <T>

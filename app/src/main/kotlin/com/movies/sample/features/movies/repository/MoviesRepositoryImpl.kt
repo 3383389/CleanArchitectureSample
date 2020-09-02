@@ -2,8 +2,8 @@ package com.movies.sample.features.movies.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.movies.sample.core.interactor.ErrorEntity
-import com.movies.sample.core.interactor.ErrorHandler
+import com.movies.sample.core.exception.ErrorEntity
+import com.movies.sample.core.exception.ErrorHandler
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.platform.NetworkHandler
 import com.movies.sample.features.movies.details.MovieDetailsEntity

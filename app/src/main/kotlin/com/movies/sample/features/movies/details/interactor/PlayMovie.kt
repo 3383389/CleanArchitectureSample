@@ -1,7 +1,7 @@
 package com.movies.sample.features.movies.details.interactor
 
 import android.content.Context
-import com.movies.sample.core.interactor.ErrorEntity
+import com.movies.sample.core.exception.ErrorEntity
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.interactor.UseCase
 import com.movies.sample.core.navigation.Navigator

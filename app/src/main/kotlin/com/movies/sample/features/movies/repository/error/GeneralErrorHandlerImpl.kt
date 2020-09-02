@@ -1,8 +1,8 @@
 package com.movies.sample.features.movies.repository.error
 
 import android.util.Log
-import com.movies.sample.core.interactor.ErrorEntity
-import com.movies.sample.core.interactor.ErrorHandler
+import com.movies.sample.core.exception.ErrorEntity
+import com.movies.sample.core.exception.ErrorHandler
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.HttpURLConnection

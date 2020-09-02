@@ -6,7 +6,7 @@ import androidx.room.Room
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.movies.sample.BuildConfig
-import com.movies.sample.core.interactor.ErrorHandler
+import com.movies.sample.core.exception.ErrorHandler
 import com.movies.sample.features.movies.repository.MoviesRepository
 import com.movies.sample.features.movies.repository.MoviesRepositoryImpl
 import com.movies.sample.features.movies.repository.db.AppDatabase

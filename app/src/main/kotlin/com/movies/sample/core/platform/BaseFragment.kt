@@ -24,27 +24,24 @@ import javax.inject.Inject
  */
 abstract class BaseFragment : androidx.fragment.app.Fragment() {
 
-    abstract fun layoutId(): Int
+    @Inject lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     val appComponent: ApplicationComponent by lazy(mode = LazyThreadSafetyMode.NONE) {
         (activity?.application as AndroidApplication).appComponent
     }
-
-    @Inject lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
             inflater.inflate(layoutId(), container, false)
 
     open fun onBackPressed() {}
 
+    abstract fun layoutId(): Int
+
     internal fun firstTimeCreated(savedInstanceState: Bundle?) = savedInstanceState == null
 
     internal fun showProgress() = progressStatus(View.VISIBLE)
 
     internal fun hideProgress() = progressStatus(View.GONE)
-
-    private fun progressStatus(viewStatus: Int) =
-            with(activity) { if (this is BaseActivity) this.progress.visibility = viewStatus }
 
     internal fun notify(@StringRes message: Int) =
             Snackbar.make(viewContainer, message, Snackbar.LENGTH_SHORT).show()
@@ -56,4 +53,7 @@ abstract class BaseFragment : androidx.fragment.app.Fragment() {
                 color.colorTextPrimary))
         snackBar.show()
     }
+
+    private fun progressStatus(viewStatus: Int) =
+        with(activity) { if (this is BaseActivity) this.progress.visibility = viewStatus }
 }

@@ -2,7 +2,7 @@ package com.movies.sample.features.movies
 
 import com.movies.sample.AndroidTest
 import com.movies.sample.core.extension.empty
-import com.movies.sample.core.interactor.ErrorEntity
+import com.movies.sample.core.exception.ErrorEntity
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.platform.NetworkHandler
 import com.movies.sample.features.movies.details.MovieDetailsEntity

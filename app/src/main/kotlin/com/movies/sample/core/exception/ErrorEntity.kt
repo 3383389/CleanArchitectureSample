@@ -1,4 +1,4 @@
-package com.movies.sample.core.interactor
+package com.movies.sample.core.exception
 
 sealed class ErrorEntity (open val message: String? = null) {
 
