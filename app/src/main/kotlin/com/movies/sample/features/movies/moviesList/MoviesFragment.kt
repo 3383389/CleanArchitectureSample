@@ -33,11 +33,10 @@ class MoviesFragment : BaseFragment() {
         appComponent.inject(this)
 
         moviesViewModel = viewModel(viewModelFactory) {
-            observe(moviesMediatorLiveData, ::renderMoviesList)
+            observe(movies, ::renderMoviesList)
             observe(progressVisibility, ::setProgressVisibility)
             error(failure, ::handleError)
             changeState(arguments?.getString(PARAM_STATE) ?: STATE_MOVIES)
-            initMoviesLiveData()
         }
     }
 

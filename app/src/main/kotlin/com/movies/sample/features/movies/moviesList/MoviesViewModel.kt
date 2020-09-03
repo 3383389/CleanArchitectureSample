@@ -2,8 +2,7 @@ package com.movies.sample.features.movies.moviesList
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.interactor.UseCase
@@ -16,7 +15,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 class MoviesViewModel
 @Inject constructor(
     application: Application,
@@ -27,38 +25,24 @@ class MoviesViewModel
     private val removeMovieFromFavorites: RemoveMovieFromFavorites
 ) : BaseViewModel(application) {
 
-    private lateinit var _movies: LiveData<List<MovieEntity>>
-    val moviesMediatorLiveData = MediatorLiveData<List<MovieEntity>>()
-
     private var state: String = MoviesFragment.STATE_MOVIES // state by default
-    val moviesLiveDataInitialized = MutableLiveData<Boolean>(false)
+
+    val movies: LiveData<List<MovieEntity>> = liveData {
+        emit(emptyList())
+        // get movies from DB
+        val result = when (state) {
+            MoviesFragment.STATE_MOVIES -> getLocalMovies.run(UseCase.None())
+            MoviesFragment.STATE_MOVIES_FAVORITES -> getFavoriteMovies.run(UseCase.None())
+            else -> throw IllegalStateException("MoviesViewModel wrong state")
+        }
+        when (result) {
+            is Result.Success -> emitSource(result.data)
+            is Result.Error -> handleErrors(result)
+        }
+    }
 
     fun changeState(state: String) {
         this.state = state
-    }
-
-    fun initMoviesLiveData() {
-        when (state) {
-            MoviesFragment.STATE_MOVIES ->
-                viewModelScope.launch {
-                    getLocalMovies(UseCase.None()) {
-                        when (it) {
-                            is Result.Success -> handleMovieList(it.data)
-                            is Result.Error -> handleErrors(it) { initMoviesLiveData() }
-                        }
-                    }
-                }
-            MoviesFragment.STATE_MOVIES_FAVORITES ->
-                viewModelScope.launch {
-                    getFavoriteMovies(UseCase.None()) {
-                        when (it) {
-                            is Result.Success -> handleMovieList(it.data)
-                            is Result.Error -> handleErrors(it) { initMoviesLiveData() }
-                        }
-                    }
-                }
-        }
-
     }
 
     fun loadMovies() {
@@ -80,11 +64,6 @@ class MoviesViewModel
         } else {
             addFavorites(movie)
         }
-    }
-
-    private fun handleMovieList(movies: LiveData<List<MovieEntity>>) {
-        this._movies = movies
-        moviesMediatorLiveData.addSource(_movies) { moviesMediatorLiveData.value = it }
     }
 
     private fun addFavorites(movie: MovieEntity) {

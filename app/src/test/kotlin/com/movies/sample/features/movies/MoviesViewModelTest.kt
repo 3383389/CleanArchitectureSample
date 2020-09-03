@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.movies.sample.AndroidTest
 import com.movies.sample.core.interactor.Result
-import com.movies.sample.features.movies.moviesList.*
+import com.movies.sample.features.movies.moviesList.MovieEntity
+import com.movies.sample.features.movies.moviesList.MoviesViewModel
+import com.movies.sample.features.movies.moviesList.RemoveMovieFromFavorites
 import com.movies.sample.features.movies.moviesList.interactor.AddMovieToFavorites
 import com.movies.sample.features.movies.moviesList.interactor.GetFavoriteMovies
 import com.movies.sample.features.movies.moviesList.interactor.GetLocalMovies
@@ -24,12 +26,16 @@ class MoviesViewModelTest : AndroidTest() {
 
     @Mock
     private lateinit var getLocalMovies: GetLocalMovies
+
     @Mock
     private lateinit var updateMovies: UpdateMovies
+
     @Mock
     private lateinit var getFavoriteMovies: GetFavoriteMovies
+
     @Mock
     private lateinit var addMovieToFavorites: AddMovieToFavorites
+
     @Mock
     private lateinit var removeMovieFromFavorites: RemoveMovieFromFavorites
 
@@ -53,16 +59,12 @@ class MoviesViewModelTest : AndroidTest() {
         )
         given { runBlocking { getLocalMovies.run(eq(any())) } }.willReturn(Result.Success(MutableLiveData(moviesList)))
 
-        moviesViewModel.moviesLiveDataInitialized.observeForever { isInitialized ->
-            if (isInitialized == true) {
-                moviesViewModel.moviesMediatorLiveData.observeForever {
-                    it!!.size shouldEqualTo 2
-                    it[0].id shouldEqualTo 0
-                    it[0].poster shouldEqualTo "IronMan"
-                    it[1].id shouldEqualTo 1
-                    it[1].poster shouldEqualTo "Batman"
-                }
-            }
+        moviesViewModel.movies.observeForever {
+            it!!.size shouldEqualTo 2
+            it[0].id shouldEqualTo 0
+            it[0].poster shouldEqualTo "IronMan"
+            it[1].id shouldEqualTo 1
+            it[1].poster shouldEqualTo "Batman"
         }
         runBlocking { moviesViewModel.loadMovies() }
     }

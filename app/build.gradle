@@ -95,6 +95,7 @@ dependencies {
   implementation applicationDependencies.constraintLayout
   implementation applicationDependencies.archComponents
   implementation applicationDependencies.archComponentsViewModel
+  implementation applicationDependencies.archComponentsLiveData
   implementation applicationDependencies.cardView
   implementation applicationDependencies.recyclerView
   implementation applicationDependencies.design
