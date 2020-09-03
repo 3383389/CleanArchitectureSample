@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import com.movies.sample.UnitTest
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.interactor.UseCase
-import com.movies.sample.features.movies.moviesList.MovieEntity
-import com.movies.sample.features.movies.moviesList.interactor.GetLocalMovies
+import com.movies.sample.features.movies.entities.MovieEntity
+import com.movies.sample.features.movies.interactors.GetLocalMovies
 import com.movies.sample.features.movies.repository.MoviesRepository
 import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.verify

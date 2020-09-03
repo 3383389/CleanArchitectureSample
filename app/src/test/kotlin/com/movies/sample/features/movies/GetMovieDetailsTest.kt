@@ -1,15 +1,11 @@
 package com.movies.sample.features.movies
 
 import com.movies.sample.UnitTest
-import com.movies.sample.core.interactor.Result
-import com.movies.sample.features.movies.details.MovieDetailsEntity
-import com.movies.sample.features.movies.details.interactor.GetMovieDetails
+import com.movies.sample.features.movies.interactors.GetMovieDetails
 import com.movies.sample.features.movies.repository.MoviesRepository
-import com.nhaarman.mockito_kotlin.given
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock

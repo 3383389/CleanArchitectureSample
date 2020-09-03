@@ -1,4 +1,4 @@
-package com.movies.sample.features.movies.details
+package com.movies.sample.features.movies.movieDetails
 
 import android.app.Application
 import androidx.lifecycle.LiveData
@@ -7,13 +7,14 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.platform.BaseViewModel
-import com.movies.sample.features.movies.details.interactor.GetMovieDetails
-import com.movies.sample.features.movies.details.interactor.GetMovieDetails.Params
-import com.movies.sample.features.movies.details.interactor.PlayMovie
-import com.movies.sample.features.movies.moviesList.MovieEntity
-import com.movies.sample.features.movies.moviesList.interactor.RemoveMovieFromFavorites
-import com.movies.sample.features.movies.moviesList.interactor.AddMovieToFavorites
-import com.movies.sample.features.movies.moviesList.interactor.IsMovieFavorite
+import com.movies.sample.features.movies.interactors.GetMovieDetails
+import com.movies.sample.features.movies.interactors.GetMovieDetails.Params
+import com.movies.sample.features.movies.interactors.PlayMovie
+import com.movies.sample.features.movies.entities.MovieDetailsEntity
+import com.movies.sample.features.movies.entities.MovieEntity
+import com.movies.sample.features.movies.interactors.RemoveMovieFromFavorites
+import com.movies.sample.features.movies.interactors.AddMovieToFavorites
+import com.movies.sample.features.movies.interactors.IsMovieFavorite
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

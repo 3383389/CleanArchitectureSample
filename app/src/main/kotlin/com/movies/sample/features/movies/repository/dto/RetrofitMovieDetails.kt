@@ -1,7 +1,7 @@
 package com.movies.sample.features.movies.repository.dto
 
 import com.movies.sample.core.extension.empty
-import com.movies.sample.features.movies.details.MovieDetailsEntity
+import com.movies.sample.features.movies.entities.MovieDetailsEntity
 
 data class RetrofitMovieDetails(
     private val id: Int,

@@ -1,12 +1,11 @@
-package com.movies.sample.features.movies.details.interactor
+package com.movies.sample.features.movies.interactors
 
 import android.content.Context
-import com.movies.sample.core.exception.ErrorEntity
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.interactor.UseCase
 import com.movies.sample.core.navigation.Navigator
-import com.movies.sample.features.movies.details.interactor.PlayMovie.Params
-import com.movies.sample.features.movies.moviesList.MovieError
+import com.movies.sample.features.movies.interactors.PlayMovie.Params
+import com.movies.sample.features.movies.entities.MovieError
 import javax.inject.Inject
 
 class PlayMovie

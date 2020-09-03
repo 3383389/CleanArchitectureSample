@@ -9,7 +9,8 @@ import com.movies.sample.core.exception.ErrorWithAction
 import com.movies.sample.core.extension.*
 import com.movies.sample.core.navigation.Navigator
 import com.movies.sample.core.platform.BaseFragment
-import com.movies.sample.features.movies.moviesList.MovieError.ListNotAvailable
+import com.movies.sample.features.movies.entities.MovieEntity
+import com.movies.sample.features.movies.entities.MovieError.ListNotAvailable
 import com.movies.sample.features.movies.moviesTabs.MoviesActivity
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 import kotlinx.android.synthetic.main.row_movie.view.*

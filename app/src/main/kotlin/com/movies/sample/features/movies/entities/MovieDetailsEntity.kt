@@ -1,7 +1,6 @@
-package com.movies.sample.features.movies.details
+package com.movies.sample.features.movies.entities
 
 import com.movies.sample.core.extension.empty
-import com.movies.sample.features.movies.moviesList.MovieEntity
 
 data class MovieDetailsEntity(
     val id: Int,

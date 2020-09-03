@@ -1,6 +1,6 @@
 package com.movies.sample.features.movies.repository.dto
 
-import com.movies.sample.features.movies.moviesList.MovieEntity
+import com.movies.sample.features.movies.entities.MovieEntity
 
 data class RetrofitMovie(private val id: Int, private val poster: String) {
     fun toMovie() = MovieEntity(id, poster, false) // todo

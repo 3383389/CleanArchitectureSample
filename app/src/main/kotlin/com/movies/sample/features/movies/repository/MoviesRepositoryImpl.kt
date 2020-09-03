@@ -6,8 +6,8 @@ import com.movies.sample.core.exception.ErrorEntity
 import com.movies.sample.core.exception.ErrorHandler
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.platform.NetworkHandler
-import com.movies.sample.features.movies.details.MovieDetailsEntity
-import com.movies.sample.features.movies.moviesList.MovieEntity
+import com.movies.sample.features.movies.entities.MovieDetailsEntity
+import com.movies.sample.features.movies.entities.MovieEntity
 import com.movies.sample.features.movies.repository.db.MoviesDao
 import com.movies.sample.features.movies.repository.dto.RetrofitMovie
 import com.movies.sample.features.movies.repository.network.MoviesService
@@ -66,7 +66,13 @@ class MoviesRepositoryImpl
         return try {
             val moviesLd = database.allMoviesWithFavorites()
             Result.Success(Transformations.map(moviesLd) { input ->
-                input.map { MovieEntity(it.movie.id, it.movie.poster, it.favoriteMovies.isNotEmpty()) }
+                input.map {
+                    MovieEntity(
+                        it.movie.id,
+                        it.movie.poster,
+                        it.favoriteMovies.isNotEmpty()
+                    )
+                }
             })
         } catch (throwable: Throwable) {
             Result.Error(errorHandler.getError(throwable))
@@ -77,7 +83,13 @@ class MoviesRepositoryImpl
         return try {
             val moviesLd = database.allFavoriteMoviesLD()
             Result.Success(Transformations.map(moviesLd) { input ->
-                input.map { MovieEntity(it.id, it.poster, true) }
+                input.map {
+                    MovieEntity(
+                        it.id,
+                        it.poster,
+                        true
+                    )
+                }
             })
         } catch (throwable: Throwable) {
             Result.Error(errorHandler.getError(throwable))

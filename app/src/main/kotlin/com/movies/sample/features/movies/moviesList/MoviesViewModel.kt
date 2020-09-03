@@ -7,7 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.interactor.UseCase
 import com.movies.sample.core.platform.BaseViewModel
-import com.movies.sample.features.movies.moviesList.interactor.*
+import com.movies.sample.features.movies.entities.MovieEntity
+import com.movies.sample.features.movies.interactors.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject

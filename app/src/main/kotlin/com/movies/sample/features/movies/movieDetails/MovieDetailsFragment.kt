@@ -1,4 +1,4 @@
-package com.movies.sample.features.movies.details
+package com.movies.sample.features.movies.movieDetails
 
 import android.app.Activity
 import android.content.Intent
@@ -10,8 +10,9 @@ import com.movies.sample.core.exception.ErrorEntity
 import com.movies.sample.core.exception.ErrorWithAction
 import com.movies.sample.core.extension.*
 import com.movies.sample.core.platform.BaseFragment
-import com.movies.sample.features.movies.moviesList.MovieEntity
-import com.movies.sample.features.movies.moviesList.MovieError
+import com.movies.sample.features.movies.entities.MovieDetailsEntity
+import com.movies.sample.features.movies.entities.MovieEntity
+import com.movies.sample.features.movies.entities.MovieError
 import com.movies.sample.features.movies.moviesTabs.MoviesActivity
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.toolbar.*

@@ -1,9 +1,9 @@
-package com.movies.sample.features.movies.details
+package com.movies.sample.features.movies.movieDetails
 
 import android.content.Context
 import android.content.Intent
 import com.movies.sample.core.platform.BaseActivity
-import com.movies.sample.features.movies.moviesList.MovieEntity
+import com.movies.sample.features.movies.entities.MovieEntity
 
 class MovieDetailsActivity : BaseActivity() {
 

@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.movies.sample.features.movies.moviesList.MovieEntity
 
 @Entity(tableName = "movies_favorite",
     foreignKeys = [

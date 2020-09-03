@@ -9,8 +9,8 @@ import android.view.View
 import androidx.core.util.Pair
 import com.movies.sample.features.login.Authenticator
 import com.movies.sample.features.login.LoginActivity
-import com.movies.sample.features.movies.details.MovieDetailsActivity
-import com.movies.sample.features.movies.moviesList.MovieEntity
+import com.movies.sample.features.movies.movieDetails.MovieDetailsActivity
+import com.movies.sample.features.movies.entities.MovieEntity
 import com.movies.sample.features.movies.moviesTabs.MoviesActivity
 import com.movies.sample.core.extension.empty
 import javax.inject.Inject

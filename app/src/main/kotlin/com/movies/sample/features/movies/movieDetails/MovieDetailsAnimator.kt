@@ -1,4 +1,4 @@
-package com.movies.sample.features.movies.details
+package com.movies.sample.features.movies.movieDetails
 
 import androidx.fragment.app.FragmentActivity
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator

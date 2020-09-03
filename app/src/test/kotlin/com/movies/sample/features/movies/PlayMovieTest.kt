@@ -2,7 +2,7 @@ package com.movies.sample.features.movies
 
 import com.movies.sample.AndroidTest
 import com.movies.sample.core.navigation.Navigator
-import com.movies.sample.features.movies.details.interactor.PlayMovie
+import com.movies.sample.features.movies.interactors.PlayMovie
 import com.nhaarman.mockito_kotlin.verify
 import kotlinx.coroutines.runBlocking
 import org.junit.Before

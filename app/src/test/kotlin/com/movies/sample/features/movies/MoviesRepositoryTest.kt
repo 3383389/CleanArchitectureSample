@@ -5,7 +5,7 @@ import com.movies.sample.core.extension.empty
 import com.movies.sample.core.exception.ErrorEntity
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.platform.NetworkHandler
-import com.movies.sample.features.movies.details.MovieDetailsEntity
+import com.movies.sample.features.movies.entities.MovieDetailsEntity
 import com.movies.sample.features.movies.repository.MoviesRepository
 import com.movies.sample.features.movies.repository.MoviesRepositoryImpl
 import com.movies.sample.features.movies.repository.db.MoviesDao

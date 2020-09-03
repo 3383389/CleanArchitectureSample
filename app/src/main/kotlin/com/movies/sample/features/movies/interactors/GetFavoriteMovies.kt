@@ -1,8 +1,8 @@
-package com.movies.sample.features.movies.moviesList.interactor
+package com.movies.sample.features.movies.interactors
 
 import androidx.lifecycle.LiveData
 import com.movies.sample.core.interactor.UseCase
-import com.movies.sample.features.movies.moviesList.MovieEntity
+import com.movies.sample.features.movies.entities.MovieEntity
 import com.movies.sample.features.movies.repository.MoviesRepository
 import javax.inject.Inject
 

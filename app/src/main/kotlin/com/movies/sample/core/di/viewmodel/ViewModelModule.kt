@@ -2,7 +2,7 @@ package com.movies.sample.core.di.viewmodel
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.movies.sample.features.movies.details.MovieDetailsViewModel
+import com.movies.sample.features.movies.movieDetails.MovieDetailsViewModel
 import com.movies.sample.features.movies.moviesList.MoviesViewModel
 import dagger.Binds
 import dagger.Module

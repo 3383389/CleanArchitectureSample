@@ -8,6 +8,7 @@ import com.movies.sample.R
 import com.movies.sample.core.extension.inflate
 import com.movies.sample.core.extension.loadFromUrl
 import com.movies.sample.core.navigation.Navigator
+import com.movies.sample.features.movies.entities.MovieEntity
 import kotlinx.android.synthetic.main.row_movie.view.*
 import javax.inject.Inject
 import kotlin.properties.Delegates

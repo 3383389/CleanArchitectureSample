@@ -2,8 +2,8 @@ package com.movies.sample.features.movies.repository
 
 import androidx.lifecycle.LiveData
 import com.movies.sample.core.interactor.Result
-import com.movies.sample.features.movies.details.MovieDetailsEntity
-import com.movies.sample.features.movies.moviesList.MovieEntity
+import com.movies.sample.features.movies.entities.MovieDetailsEntity
+import com.movies.sample.features.movies.entities.MovieEntity
 
 interface MoviesRepository {
     suspend fun updateMovies(): Result<Boolean>

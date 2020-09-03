@@ -1,4 +1,4 @@
-package com.movies.sample.features.movies.moviesList
+package com.movies.sample.features.movies.entities
 
 import android.os.Parcelable
 import com.movies.sample.core.extension.empty
@@ -15,6 +15,7 @@ data class MovieEntity(
     fun toRoomFavorites(): RoomMovieFavorites = RoomMovieFavorites(id, poster)
 
     companion object {
-        fun empty() = MovieEntity(0, String.empty(), false)
+        fun empty() =
+            MovieEntity(0, String.empty(), false)
     }
 }

@@ -1,4 +1,4 @@
-package com.movies.sample.features.movies.moviesList.interactor
+package com.movies.sample.features.movies.interactors
 
 import androidx.lifecycle.LiveData
 import com.movies.sample.core.interactor.Result

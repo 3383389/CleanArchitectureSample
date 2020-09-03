@@ -1,4 +1,4 @@
-package com.movies.sample.features.movies.moviesList
+package com.movies.sample.features.movies.entities
 
 import com.movies.sample.core.exception.ErrorEntity
 
