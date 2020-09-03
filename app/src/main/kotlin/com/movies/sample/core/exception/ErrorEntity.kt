@@ -2,21 +2,14 @@ package com.movies.sample.core.exception
 
 sealed class ErrorEntity (open val message: String? = null) {
 
-    object Unauthorized : ErrorEntity()
+    class BadRequest(override val message: String? = null) : ErrorEntity(message)
 
     object Network : ErrorEntity()
 
-    object NotFound : ErrorEntity()
-    
-    object AccessDenied : ErrorEntity()
-
-    object ServiceUnavailable : ErrorEntity()
-
-    class BadRequest(override val message: String? = null) : ErrorEntity()
-
-    object Cancelled : ErrorEntity()
+    object ServerError : ErrorEntity()
 
     object Unknown : ErrorEntity()
 
-    object UnknownServiceError : ErrorEntity()
+    /** * Extend this class for feature specific failures.*/
+    abstract class FeatureError: ErrorEntity()
 }

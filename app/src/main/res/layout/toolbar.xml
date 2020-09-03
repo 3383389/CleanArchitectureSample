@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:indeterminateOnly="true"
         android:indeterminateTint="@color/colorSecondary"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 
 </com.google.android.material.appbar.AppBarLayout>
 

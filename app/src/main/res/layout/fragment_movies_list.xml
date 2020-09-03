@@ -21,6 +21,6 @@
         android:paddingBottom="160dp"
         android:scaleType="center"
         android:src="@mipmap/ic_batman"
-        android:visibility="gone" />
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>

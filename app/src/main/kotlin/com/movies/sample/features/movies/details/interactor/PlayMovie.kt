@@ -6,6 +6,7 @@ import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.interactor.UseCase
 import com.movies.sample.core.navigation.Navigator
 import com.movies.sample.features.movies.details.interactor.PlayMovie.Params
+import com.movies.sample.features.movies.moviesList.MovieError
 import javax.inject.Inject
 
 class PlayMovie
@@ -19,7 +20,7 @@ class PlayMovie
             navigator.openVideo(context, params.url)
             Result.Success(None())
         } catch (throwable: Throwable) {
-            Result.Error(ErrorEntity.Unknown)
+            Result.Error(MovieError.ErrorPlaying())
         }
     }
 

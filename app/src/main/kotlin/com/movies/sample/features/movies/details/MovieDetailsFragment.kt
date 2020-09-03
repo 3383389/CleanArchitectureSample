@@ -4,16 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.app.SharedElementCallback
 import androidx.core.view.ViewCompat
 import com.movies.sample.R
-import com.movies.sample.core.exception.Failure
-import com.movies.sample.core.exception.Failure.NetworkConnection
-import com.movies.sample.core.exception.Failure.ServerError
+import com.movies.sample.core.exception.ErrorEntity
+import com.movies.sample.core.exception.ErrorWithAction
 import com.movies.sample.core.extension.*
 import com.movies.sample.core.platform.BaseFragment
 import com.movies.sample.features.movies.moviesList.MovieEntity
-import com.movies.sample.features.movies.moviesList.MovieFailure.NonExistentMovie
+import com.movies.sample.features.movies.moviesList.MovieError
 import com.movies.sample.features.movies.moviesTabs.MoviesActivity
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -37,7 +35,7 @@ class MovieDetailsFragment : BaseFragment() {
             setupMovieId((arguments?.get(PARAM_MOVIE) as MovieEntity).id)
             observe(variableIsFavoriteInitialized, ::subscribeOnIsFavoriteData)
             observe(movieDetails, ::renderMovieDetails)
-            failure(failure, ::handleFailure)
+            error(failure, ::handleError)
         }
     }
 
@@ -115,15 +113,15 @@ class MovieDetailsFragment : BaseFragment() {
         movieDetailsAnimator.scaleUpView(moviePlay)
     }
 
-    private fun handleFailure(failure: Failure?) {
-        when (failure) {
-            is NetworkConnection -> {
+    private fun handleError(error: ErrorWithAction?) {
+        when (error?.errorEntity) {
+            is ErrorEntity.Network -> {
                 notify(R.string.failure_network_connection); close()
             }
-            is ServerError -> {
+            is ErrorEntity.ServerError -> {
                 notify(R.string.failure_server_error); close()
             }
-            is NonExistentMovie -> {
+            is MovieError.NonExistentMovie -> {
                 notify(R.string.failure_movie_non_existent); close()
             }
         }

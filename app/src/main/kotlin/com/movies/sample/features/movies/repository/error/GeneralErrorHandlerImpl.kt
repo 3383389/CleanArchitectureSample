@@ -16,21 +16,20 @@ class GeneralErrorHandlerImpl : ErrorHandler {
             is HttpException -> {
                 when (throwable.code()) {
                     // Unauthorized
-                    HttpURLConnection.HTTP_UNAUTHORIZED -> ErrorEntity.Unauthorized
+                    HttpURLConnection.HTTP_INTERNAL_ERROR -> ErrorEntity.ServerError
 
                     // not found
-                    HttpURLConnection.HTTP_NOT_FOUND -> ErrorEntity.NotFound
+                    HttpURLConnection.HTTP_NOT_FOUND -> ErrorEntity.ServerError
 
                     // access denied
-                    HttpURLConnection.HTTP_FORBIDDEN -> ErrorEntity.AccessDenied
+                    HttpURLConnection.HTTP_FORBIDDEN -> ErrorEntity.ServerError
 
                     // unavailable service
-                    HttpURLConnection.HTTP_UNAVAILABLE -> ErrorEntity.ServiceUnavailable
+                    HttpURLConnection.HTTP_UNAVAILABLE -> ErrorEntity.ServerError
 
                     HttpURLConnection.HTTP_BAD_REQUEST -> ErrorEntity.BadRequest(parseMessage(throwable))
 
-                    // all the others will be treated as unknown error
-                    else -> ErrorEntity.UnknownServiceError
+                    else -> ErrorEntity.ServerError
                 }
             }
             else -> ErrorEntity.Unknown

@@ -14,7 +14,6 @@ import com.movies.sample.R.color
 import com.movies.sample.core.di.ApplicationComponent
 import com.movies.sample.core.extension.appContext
 import com.movies.sample.core.extension.falseIfNull
-import com.movies.sample.core.extension.observe
 import com.movies.sample.core.extension.viewContainer
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject
@@ -42,18 +41,12 @@ abstract class BaseFragment : androidx.fragment.app.Fragment() {
 
     internal fun firstTimeCreated(savedInstanceState: Bundle?) = savedInstanceState == null
 
-//    internal fun showProgress() = progressStatus(View.VISIBLE)
-//
-//    internal fun hideProgress() {
-////        progressStatus(View.GONE)
-//    }
-
     internal fun notify(@StringRes message: Int) =
         Snackbar.make(viewContainer, message, Snackbar.LENGTH_SHORT).show()
 
-    internal fun notifyWithAction(@StringRes message: Int, @StringRes actionText: Int, action: () -> Any) {
+    internal fun notifyWithAction(@StringRes message: Int, @StringRes actionText: Int, action: (() -> Unit)?) {
         val snackBar = Snackbar.make(viewContainer, message, Snackbar.LENGTH_INDEFINITE)
-        snackBar.setAction(actionText) { _ -> action.invoke() }
+        snackBar.setAction(actionText) { action?.invoke() }
         snackBar.setActionTextColor(
             ContextCompat.getColor(
                 appContext,
@@ -62,10 +55,6 @@ abstract class BaseFragment : androidx.fragment.app.Fragment() {
         )
         snackBar.show()
     }
-
-    private fun progressStatus(viewStatus: Int) =
-        with(activity) { if (this is BaseActivity) this.progress.visibility = viewStatus }
-
 
     protected fun setProgressVisibility(visible: Boolean?) {
         with(activity) {

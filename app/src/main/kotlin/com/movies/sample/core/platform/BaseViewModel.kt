@@ -5,21 +5,19 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.movies.sample.AndroidApplication
-import com.movies.sample.core.exception.Failure
-import com.movies.sample.core.extension.toast
 import com.movies.sample.core.exception.ErrorEntity
+import com.movies.sample.core.exception.ErrorWithAction
 import com.movies.sample.core.interactor.Result
 
 /**
  * Base ViewModel class with default Failure handling.
  * @see ViewModel
- * @see Failure
+ * @see ErrorEntity
  */
 abstract class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
     var progressVisibility: MutableLiveData<Boolean> = MutableLiveData(false)
-    var failure: MutableLiveData<Failure> = MutableLiveData()
+    var failure: MutableLiveData<ErrorWithAction> = MutableLiveData()
 
     protected fun showLoading() {
         progressVisibility.postValue(true)
@@ -34,36 +32,17 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
         retryListener: (() -> Unit)? = null
     ) {
         Log.e("Error", " - ${result.error}")
+        // do some logic if needed
         when (result.error) {
             is ErrorEntity.Network -> {
-                showError(message = "no network", retryListener = retryListener)
             }
-            is ErrorEntity.Unauthorized -> {
-                // do some work with auth logic
-                showError(message = "Unauthorized", retryListener = retryListener)
-            }
-            is ErrorEntity.BadRequest -> {
-                showError(message = result.error.message, retryListener = retryListener)
-            }
-            is ErrorEntity.ServiceUnavailable -> {
-                showError(message = "try later", retryListener = retryListener)
-            }
-            is ErrorEntity.Cancelled -> {
-                showError(message = "Cancelled", retryListener = retryListener)
+            is ErrorEntity.ServerError -> {
             }
             else -> {
-                showError(message = "something went wrong", retryListener = retryListener)
             }
         }
+        // notify UI to render error message
+        failure.value = ErrorWithAction(result.error, retryListener)
     }
 
-    protected fun showError(
-        message: String?,
-        cancelListener: (() -> Unit)? = null,
-        retryListener: (() -> Unit)? = null
-    ) {
-        message?.let {
-            (getApplication() as AndroidApplication).toast(it)
-        }
-    }
 }

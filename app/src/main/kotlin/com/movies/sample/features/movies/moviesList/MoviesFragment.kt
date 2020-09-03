@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import com.movies.sample.R
-import com.movies.sample.core.exception.Failure
-import com.movies.sample.core.exception.Failure.NetworkConnection
-import com.movies.sample.core.exception.Failure.ServerError
+import com.movies.sample.core.exception.ErrorEntity
+import com.movies.sample.core.exception.ErrorWithAction
 import com.movies.sample.core.extension.*
 import com.movies.sample.core.navigation.Navigator
 import com.movies.sample.core.platform.BaseFragment
-import com.movies.sample.features.movies.moviesList.MovieFailure.ListNotAvailable
+import com.movies.sample.features.movies.moviesList.MovieError.ListNotAvailable
 import com.movies.sample.features.movies.moviesTabs.MoviesActivity
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 import kotlinx.android.synthetic.main.row_movie.view.*
@@ -21,6 +20,7 @@ class MoviesFragment : BaseFragment() {
 
     @Inject
     lateinit var navigator: Navigator
+
     @Inject
     lateinit var moviesAdapter: MoviesAdapter
 
@@ -35,7 +35,7 @@ class MoviesFragment : BaseFragment() {
         moviesViewModel = viewModel(viewModelFactory) {
             observe(moviesMediatorLiveData, ::renderMoviesList)
             observe(progressVisibility, ::setProgressVisibility)
-            failure(failure, ::handleFailure)
+            error(failure, ::handleError)
             changeState(arguments?.getString(PARAM_STATE) ?: STATE_MOVIES)
             initMoviesLiveData()
         }
@@ -83,25 +83,27 @@ class MoviesFragment : BaseFragment() {
     }
 
     private fun loadMoviesList() {
-        emptyView.invisible()
-        movieList.visible()
         moviesViewModel.loadMovies()
     }
 
     private fun renderMoviesList(movies: List<MovieEntity>?) {
+        if (movies.isNullOrEmpty().not()) {
+            emptyView.invisible()
+            movieList.visible()
+        }
         moviesAdapter.collection = movies.orEmpty()
     }
 
-    private fun handleFailure(failure: Failure?) {
-        when (failure) {
-            is NetworkConnection -> renderFailure(R.string.failure_network_connection)
-            is ServerError -> renderFailure(R.string.failure_server_error)
-            is ListNotAvailable -> renderFailure(R.string.failure_movies_list_unavailable)
+    private fun handleError(error: ErrorWithAction?) {
+        when (error?.errorEntity) {
+            is ErrorEntity.Network -> renderError(R.string.failure_network_connection, error.retryListener)
+            is ErrorEntity.ServerError -> renderError(R.string.failure_server_error, error.retryListener)
+            is ListNotAvailable -> renderError(R.string.failure_movies_list_unavailable, error.retryListener)
         }
     }
 
-    private fun renderFailure(@StringRes message: Int) {
-        notifyWithAction(message, R.string.action_refresh, ::loadMoviesList)
+    private fun renderError(@StringRes message: Int, retryListener: (() -> Unit)?) {
+        notifyWithAction(message, R.string.action_refresh, retryListener)
     }
 
     companion object {

@@ -64,7 +64,7 @@ class MoviesViewModel
     fun loadMovies() {
         viewModelScope.launch {
             showLoading()
-            delay(2222)
+            delay(1000) // increase server delay for testing UI
             updateMovies(UseCase.None()) {
                 when (it) {
                     is Result.Error -> handleErrors(it) { loadMovies() }
@@ -72,11 +72,6 @@ class MoviesViewModel
                 hideLoading()
             }
         }
-    }
-
-    private fun handleMovieList(movies: LiveData<List<MovieEntity>>) {
-        this._movies = movies
-        moviesMediatorLiveData.addSource(_movies) { moviesMediatorLiveData.value = it }
     }
 
     fun onFavoritesClicked(movie: MovieEntity) {
@@ -87,12 +82,15 @@ class MoviesViewModel
         }
     }
 
+    private fun handleMovieList(movies: LiveData<List<MovieEntity>>) {
+        this._movies = movies
+        moviesMediatorLiveData.addSource(_movies) { moviesMediatorLiveData.value = it }
+    }
+
     private fun addFavorites(movie: MovieEntity) {
         viewModelScope.launch {
             addMovieToFavorites(AddMovieToFavorites.Params(movie)) {
                 when (it) {
-                    is Result.Success -> {
-                    }
                     is Result.Error -> handleErrors(it) { addFavorites(movie) }
                 }
             }
@@ -103,8 +101,6 @@ class MoviesViewModel
         viewModelScope.launch {
             removeMovieFromFavorites(RemoveMovieFromFavorites.Params(movieId)) {
                 when (it) {
-                    is Result.Success -> {
-                    }
                     is Result.Error -> handleErrors(it) { removeMovieFromFavorites(movieId) }
                 }
             }
