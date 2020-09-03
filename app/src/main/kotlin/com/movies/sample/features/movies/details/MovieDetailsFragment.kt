@@ -33,8 +33,8 @@ class MovieDetailsFragment : BaseFragment() {
 
         movieDetailsViewModel = viewModel(viewModelFactory) {
             setupMovieId((arguments?.get(PARAM_MOVIE) as MovieEntity).id)
-            observe(variableIsFavoriteInitialized, ::subscribeOnIsFavoriteData)
             observe(movieDetails, ::renderMovieDetails)
+            observe(isFavorite, ::renderMovieIsFavorite)
             error(failure, ::handleError)
         }
     }
@@ -45,23 +45,9 @@ class MovieDetailsFragment : BaseFragment() {
 
         if (firstTimeCreated(savedInstanceState)) {
             movieDetailsViewModel.loadMovieDetails()
-            activity?.let {
-                moviePoster.loadUrlAndPostponeEnterTransition(movie.poster, it)
-
-                // set shared transition names
-                ViewCompat.setTransitionName(
-                    fav_iv,
-                    getString(R.string.movie_transition_favorite_icon, movie.id)
-                )
-                ViewCompat.setTransitionName(
-                    moviePoster,
-                    getString(R.string.movie_transition_poster, movie.id)
-                )
-            }
+            postponeEnterTransition(movie)
         } else {
-            movieDetailsAnimator.scaleUpView(moviePlay)
-            movieDetailsAnimator.cancelTransition(moviePoster)
-            moviePoster.loadFromUrl(movie.poster)
+            cancelEnterTransition(movie)
         }
         setListeners()
     }
@@ -81,15 +67,30 @@ class MovieDetailsFragment : BaseFragment() {
             movieDetailsAnimator.cancelTransition(moviePoster)
     }
 
-    private fun setListeners() {
-        fav_iv.setOnClickListener { movieDetailsViewModel.onFavoritesClicked() }
+    private fun cancelEnterTransition(movie: MovieEntity) {
+        movieDetailsAnimator.scaleUpView(moviePlay)
+        movieDetailsAnimator.cancelTransition(moviePoster)
+        moviePoster.loadFromUrl(movie.poster)
     }
 
-    private fun subscribeOnIsFavoriteData(isVarInitialized: Boolean?) {
-        if (isVarInitialized == true) {
-            observe(movieDetailsViewModel.isFavorite, ::renderMovieIsFavorite)
-            movieDetailsViewModel.variableIsFavoriteInitialized.removeObservers(this)
+    private fun postponeEnterTransition(movie: MovieEntity) {
+        activity?.let {
+            moviePoster.loadUrlAndPostponeEnterTransition(movie.poster, it)
+
+            // set shared transition names
+            ViewCompat.setTransitionName(
+                fav_iv,
+                getString(R.string.movie_transition_favorite_icon, movie.id)
+            )
+            ViewCompat.setTransitionName(
+                moviePoster,
+                getString(R.string.movie_transition_poster, movie.id)
+            )
         }
+    }
+
+    private fun setListeners() {
+        fav_iv.setOnClickListener { movieDetailsViewModel.onFavoritesClicked() }
     }
 
     private fun renderMovieIsFavorite(isFavorite: Boolean?) {
@@ -99,9 +100,7 @@ class MovieDetailsFragment : BaseFragment() {
     private fun renderMovieDetails(movie: MovieDetailsEntity?) {
         movie?.let {
             with(movie) {
-                activity?.let {
-                    it.toolbar.title = title
-                }
+                requireActivity().toolbar.title = title
                 movieSummary.text = summary
                 movieCast.text = cast
                 movieDirector.text = director
@@ -116,13 +115,16 @@ class MovieDetailsFragment : BaseFragment() {
     private fun handleError(error: ErrorWithAction?) {
         when (error?.errorEntity) {
             is ErrorEntity.Network -> {
-                notify(R.string.failure_network_connection); close()
+                notify(R.string.failure_network_connection)
+                close()
             }
             is ErrorEntity.ServerError -> {
-                notify(R.string.failure_server_error); close()
+                notify(R.string.failure_server_error)
+                close()
             }
             is MovieError.NonExistentMovie -> {
-                notify(R.string.failure_movie_non_existent); close()
+                notify(R.string.failure_movie_non_existent)
+                close()
             }
         }
     }

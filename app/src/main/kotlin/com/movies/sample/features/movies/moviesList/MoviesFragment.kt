@@ -89,6 +89,9 @@ class MoviesFragment : BaseFragment() {
         if (movies.isNullOrEmpty().not()) {
             emptyView.invisible()
             movieList.visible()
+        } else {
+            emptyView.visible()
+            movieList.invisible()
         }
         moviesAdapter.collection = movies.orEmpty()
     }

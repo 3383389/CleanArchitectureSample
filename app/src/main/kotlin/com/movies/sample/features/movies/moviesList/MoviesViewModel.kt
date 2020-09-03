@@ -7,10 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.interactor.UseCase
 import com.movies.sample.core.platform.BaseViewModel
-import com.movies.sample.features.movies.moviesList.interactor.AddMovieToFavorites
-import com.movies.sample.features.movies.moviesList.interactor.GetFavoriteMovies
-import com.movies.sample.features.movies.moviesList.interactor.GetLocalMovies
-import com.movies.sample.features.movies.moviesList.interactor.UpdateMovies
+import com.movies.sample.features.movies.moviesList.interactor.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package com.movies.sample.features.movies.moviesList
+package com.movies.sample.features.movies.moviesList.interactor
 
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.interactor.UseCase

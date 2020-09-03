@@ -3,6 +3,7 @@ package com.movies.sample.features.movies.details
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.platform.BaseViewModel
@@ -10,7 +11,7 @@ import com.movies.sample.features.movies.details.interactor.GetMovieDetails
 import com.movies.sample.features.movies.details.interactor.GetMovieDetails.Params
 import com.movies.sample.features.movies.details.interactor.PlayMovie
 import com.movies.sample.features.movies.moviesList.MovieEntity
-import com.movies.sample.features.movies.moviesList.RemoveMovieFromFavorites
+import com.movies.sample.features.movies.moviesList.interactor.RemoveMovieFromFavorites
 import com.movies.sample.features.movies.moviesList.interactor.AddMovieToFavorites
 import com.movies.sample.features.movies.moviesList.interactor.IsMovieFavorite
 import kotlinx.coroutines.launch
@@ -29,7 +30,15 @@ class MovieDetailsViewModel
     var movieDetails: MutableLiveData<MovieDetailsEntity> = MutableLiveData()
 
     val variableIsFavoriteInitialized = MutableLiveData<Boolean>(false)
-    lateinit var isFavorite: LiveData<Boolean>
+    val isFavorite: LiveData<Boolean> = liveData {
+        when (val result = isMovieFavorite.run(IsMovieFavorite.Params(movieId))) {
+            is Result.Success -> emitSource(result.data)
+            is Result.Error -> {
+                handleErrors(result)
+                emit(false)
+            }
+        }
+    }
 
     private var movieId: Int = -1
 
@@ -45,30 +54,19 @@ class MovieDetailsViewModel
 
     fun setupMovieId(id: Int) {
         movieId = id
-        viewModelScope.launch {
-            isMovieFavorite(IsMovieFavorite.Params(movieId)) {
-                when (it) {
-                    is Result.Success -> handleIsFavorite(it.data)
-                    is Result.Error -> handleErrors(it) { setupMovieId(id) }
-                }
-            }
-        }
     }
 
     fun loadMovieDetails() {
         viewModelScope.launch {
+            showLoading()
             getMovieDetails(Params(movieId)) {
                 when (it) {
                     is Result.Success -> handleMovieDetails(it.data)
                     is Result.Error -> handleErrors(it) { loadMovieDetails() }
                 }
             }
+            hideLoading()
         }
-    }
-
-    private fun handleIsFavorite(isFavorite: LiveData<Boolean>) {
-        this.isFavorite = isFavorite
-        this.variableIsFavoriteInitialized.value = true
     }
 
     private fun handleMovieDetails(movie: MovieDetailsEntity) {
@@ -92,8 +90,6 @@ class MovieDetailsViewModel
         viewModelScope.launch {
             addMovieToFavorites(AddMovieToFavorites.Params(movie)) {
                 when (it) {
-                    is Result.Success -> {
-                    }
                     is Result.Error -> handleErrors(it) { addFavorites(movie) }
                 }
             }
@@ -104,12 +100,9 @@ class MovieDetailsViewModel
         viewModelScope.launch {
             removeMovieFromFavorites(RemoveMovieFromFavorites.Params(movieId)) {
                 when (it) {
-                    is Result.Success -> {
-                    }
                     is Result.Error -> handleErrors(it) { removeMovieFromFavorites(movieId) }
                 }
             }
         }
     }
-
 }

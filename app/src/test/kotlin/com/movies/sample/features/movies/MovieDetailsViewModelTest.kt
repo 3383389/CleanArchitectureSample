@@ -7,7 +7,7 @@ import com.movies.sample.features.movies.details.MovieDetailsEntity
 import com.movies.sample.features.movies.details.MovieDetailsViewModel
 import com.movies.sample.features.movies.details.interactor.GetMovieDetails
 import com.movies.sample.features.movies.details.interactor.PlayMovie
-import com.movies.sample.features.movies.moviesList.RemoveMovieFromFavorites
+import com.movies.sample.features.movies.moviesList.interactor.RemoveMovieFromFavorites
 import com.movies.sample.features.movies.moviesList.interactor.AddMovieToFavorites
 import com.movies.sample.features.movies.moviesList.interactor.IsMovieFavorite
 import com.nhaarman.mockito_kotlin.any

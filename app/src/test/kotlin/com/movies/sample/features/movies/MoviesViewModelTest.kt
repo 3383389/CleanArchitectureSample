@@ -6,7 +6,7 @@ import com.movies.sample.AndroidTest
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.features.movies.moviesList.MovieEntity
 import com.movies.sample.features.movies.moviesList.MoviesViewModel
-import com.movies.sample.features.movies.moviesList.RemoveMovieFromFavorites
+import com.movies.sample.features.movies.moviesList.interactor.RemoveMovieFromFavorites
 import com.movies.sample.features.movies.moviesList.interactor.AddMovieToFavorites
 import com.movies.sample.features.movies.moviesList.interactor.GetFavoriteMovies
 import com.movies.sample.features.movies.moviesList.interactor.GetLocalMovies
