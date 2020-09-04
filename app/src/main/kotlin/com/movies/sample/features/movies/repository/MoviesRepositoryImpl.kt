@@ -26,9 +26,11 @@ class MoviesRepositoryImpl
             return Result.Error(ErrorEntity.Network)
         }
         return try {
+            // fetch data from backend
             val resultList = service.movies().await()?.map { movie ->
                 movie?.toRoomMovie() ?: RetrofitMovie.empty().toRoomMovie()
             }
+            // save to local DB
             if (resultList != null) {
                 database.insertMovies(resultList)
             }
@@ -40,6 +42,7 @@ class MoviesRepositoryImpl
 
     override fun movies(): Result<LiveData<List<MovieEntity>>> {
         return try {
+            // get liveData of movies and transform to app entity
             val moviesLd = database.allMoviesWithFavorites()
             Result.Success(Transformations.map(moviesLd) { input ->
                 input.map {
