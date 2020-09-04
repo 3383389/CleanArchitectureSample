@@ -6,9 +6,9 @@ import com.movies.sample.features.movies.entities.MovieEntity
 import com.movies.sample.features.movies.repository.MoviesRepository
 import javax.inject.Inject
 
-class GetLocalMovies
+class GetMovies
 @Inject constructor(private val moviesRepository: MoviesRepository)
     : UseCase<LiveData<List<MovieEntity>>, UseCase.None>() {
 
-    override suspend fun run(params: None) = moviesRepository.localMovies()
+    override suspend fun run(params: None) = moviesRepository.movies()
 }

@@ -21,16 +21,64 @@ class MoviesRepositoryImpl
     private val networkHandler: NetworkHandler
 ) : MoviesRepository {
 
-    override suspend fun updateMovies(): Result<Boolean> {
+    override suspend fun loadMovies(): Result<Boolean> {
         if (networkHandler.isConnected != true) {
             return Result.Error(ErrorEntity.Network)
         }
         return try {
-            val resultList = service.movies().await()?.map { movie -> movie?.toRoomMovie() ?: RetrofitMovie.empty().toRoomMovie() }
+            val resultList = service.movies().await()?.map { movie ->
+                movie?.toRoomMovie() ?: RetrofitMovie.empty().toRoomMovie()
+            }
             if (resultList != null) {
                 database.insertMovies(resultList)
             }
             Result.Success(true)
+        } catch (throwable: Throwable) {
+            Result.Error(errorHandler.getError(throwable))
+        }
+    }
+
+    override fun movies(): Result<LiveData<List<MovieEntity>>> {
+        return try {
+            val moviesLd = database.allMoviesWithFavorites()
+            Result.Success(Transformations.map(moviesLd) { input ->
+                input.map {
+                    MovieEntity(
+                        it.movie.id,
+                        it.movie.poster,
+                        it.movieId != null
+                    )
+                }
+            })
+        } catch (throwable: Throwable) {
+            Result.Error(errorHandler.getError(throwable))
+        }
+    }
+
+    override suspend fun movieDetails(movieId: Int): Result<MovieDetailsEntity> {
+        if (networkHandler.isConnected != true) {
+            return Result.Error(ErrorEntity.Network)
+        }
+        return try {
+            val res = service.movieDetails(movieId).await()
+            Result.Success(res?.toMovieDetails() ?: MovieDetailsEntity.empty())
+        } catch (throwable: Throwable) {
+            Result.Error(errorHandler.getError(throwable))
+        }
+    }
+
+    override fun favoriteMovies(): Result<LiveData<List<MovieEntity>>> {
+        return try {
+            val moviesLd = database.allFavoriteMoviesLD()
+            Result.Success(Transformations.map(moviesLd) { input ->
+                input.map {
+                    MovieEntity(
+                        it.movie.id,
+                        it.movie.poster,
+                        it.movieId != null
+                    )
+                }
+            })
         } catch (throwable: Throwable) {
             Result.Error(errorHandler.getError(throwable))
         }
@@ -57,52 +105,6 @@ class MoviesRepositoryImpl
     override fun isFavorite(id: Int): Result<LiveData<Boolean>> {
         return try {
             Result.Success(database.isFavorite(id))
-        } catch (throwable: Throwable) {
-            Result.Error(errorHandler.getError(throwable))
-        }
-    }
-
-    override fun localMovies(): Result<LiveData<List<MovieEntity>>> {
-        return try {
-            val moviesLd = database.allMoviesWithFavorites()
-            Result.Success(Transformations.map(moviesLd) { input ->
-                input.map {
-                    MovieEntity(
-                        it.movie.id,
-                        it.movie.poster,
-                        it.favoriteMovies.isNotEmpty()
-                    )
-                }
-            })
-        } catch (throwable: Throwable) {
-            Result.Error(errorHandler.getError(throwable))
-        }
-    }
-
-    override fun favoriteMovies(): Result<LiveData<List<MovieEntity>>> {
-        return try {
-            val moviesLd = database.allFavoriteMoviesLD()
-            Result.Success(Transformations.map(moviesLd) { input ->
-                input.map {
-                    MovieEntity(
-                        it.id,
-                        it.poster,
-                        true
-                    )
-                }
-            })
-        } catch (throwable: Throwable) {
-            Result.Error(errorHandler.getError(throwable))
-        }
-    }
-
-    override suspend fun movieDetails(movieId: Int): Result<MovieDetailsEntity> {
-        if (networkHandler.isConnected != true) {
-            return Result.Error(ErrorEntity.Network)
-        }
-        return try {
-            val res = service.movieDetails(movieId).await()
-            Result.Success(res?.toMovieDetails() ?: MovieDetailsEntity.empty())
         } catch (throwable: Throwable) {
             Result.Error(errorHandler.getError(throwable))
         }

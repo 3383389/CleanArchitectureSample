@@ -12,7 +12,7 @@ data class MovieEntity(
     var isFavorite: Boolean
 ) : Parcelable {
 
-    fun toRoomFavorites(): RoomMovieFavorites = RoomMovieFavorites(id, poster)
+    fun toRoomFavorites(): RoomMovieFavorites = RoomMovieFavorites(id)
 
     companion object {
         fun empty() =

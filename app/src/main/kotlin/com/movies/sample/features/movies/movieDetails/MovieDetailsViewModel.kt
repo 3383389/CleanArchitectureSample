@@ -28,9 +28,9 @@ class MovieDetailsViewModel
     private val removeMovieFromFavorites: RemoveMovieFromFavorites
 ) : BaseViewModel(application) {
 
+    private var movieId: Int = -1
     var movieDetails: MutableLiveData<MovieDetailsEntity> = MutableLiveData()
 
-    val variableIsFavoriteInitialized = MutableLiveData<Boolean>(false)
     val isFavorite: LiveData<Boolean> = liveData {
         when (val result = isMovieFavorite.run(IsMovieFavorite.Params(movieId))) {
             is Result.Success -> emitSource(result.data)
@@ -40,8 +40,6 @@ class MovieDetailsViewModel
             }
         }
     }
-
-    private var movieId: Int = -1
 
     fun playMovie(url: String) {
         viewModelScope.launch {

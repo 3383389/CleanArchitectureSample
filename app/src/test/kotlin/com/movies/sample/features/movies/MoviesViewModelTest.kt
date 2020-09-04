@@ -9,8 +9,8 @@ import com.movies.sample.features.movies.moviesList.MoviesViewModel
 import com.movies.sample.features.movies.interactors.RemoveMovieFromFavorites
 import com.movies.sample.features.movies.interactors.AddMovieToFavorites
 import com.movies.sample.features.movies.interactors.GetFavoriteMovies
-import com.movies.sample.features.movies.interactors.GetLocalMovies
-import com.movies.sample.features.movies.interactors.UpdateMovies
+import com.movies.sample.features.movies.interactors.GetMovies
+import com.movies.sample.features.movies.interactors.LoadMovies
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.given
@@ -25,10 +25,10 @@ class MoviesViewModelTest : AndroidTest() {
     private lateinit var moviesViewModel: MoviesViewModel
 
     @Mock
-    private lateinit var getLocalMovies: GetLocalMovies
+    private lateinit var getMovies: GetMovies
 
     @Mock
-    private lateinit var updateMovies: UpdateMovies
+    private lateinit var loadMovies: LoadMovies
 
     @Mock
     private lateinit var getFavoriteMovies: GetFavoriteMovies
@@ -43,8 +43,8 @@ class MoviesViewModelTest : AndroidTest() {
     fun setUp() {
         moviesViewModel = MoviesViewModel(
             context() as Application,
-            getLocalMovies,
-            updateMovies,
+            getMovies,
+            loadMovies,
             getFavoriteMovies,
             addMovieToFavorites,
             removeMovieFromFavorites
@@ -57,7 +57,7 @@ class MoviesViewModelTest : AndroidTest() {
             MovieEntity(0, "IronMan", false),
             MovieEntity(1, "Batman", true)
         )
-        given { runBlocking { getLocalMovies.run(eq(any())) } }.willReturn(Result.Success(MutableLiveData(moviesList)))
+        given { runBlocking { getMovies.run(eq(any())) } }.willReturn(Result.Success(MutableLiveData(moviesList)))
 
         moviesViewModel.movies.observeForever {
             it!!.size shouldEqualTo 2

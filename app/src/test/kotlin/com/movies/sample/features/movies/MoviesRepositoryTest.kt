@@ -78,7 +78,7 @@ class MoviesRepositoryTest : AndroidTest() {
     fun `movies service should return network failure when no connection`() {
         given { networkHandler.isConnected }.willReturn(false)
 
-        val movies = runBlocking { repository.updateMovies() }
+        val movies = runBlocking { repository.loadMovies() }
 
         movies shouldBeInstanceOf Result::class.java
         movies shouldBeInstanceOf Result.Error::class.java
@@ -90,7 +90,7 @@ class MoviesRepositoryTest : AndroidTest() {
     fun `movies service should return network failure when undefined connection`() {
         given { networkHandler.isConnected }.willReturn(null)
 
-        val movies = runBlocking { repository.updateMovies() }
+        val movies = runBlocking { repository.loadMovies() }
 
         movies shouldBeInstanceOf Result::class.java
         movies shouldBeInstanceOf Result.Error::class.java
@@ -105,7 +105,7 @@ class MoviesRepositoryTest : AndroidTest() {
             given { service.movies() }.willReturn(moviesResponse)
             given(moviesResponse.await()).willThrow(NullPointerException("test"))
 
-            val movies = repository.updateMovies()
+            val movies = repository.loadMovies()
 
             movies shouldBeInstanceOf Result::class.java
             movies shouldBeInstanceOf Result.Error::class.java

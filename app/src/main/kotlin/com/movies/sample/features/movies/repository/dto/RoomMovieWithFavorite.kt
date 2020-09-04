@@ -17,13 +17,10 @@
 package com.movies.sample.features.movies.repository.dto
 
 import androidx.room.Embedded
-import androidx.room.Relation
 
 
 data class RoomMovieWithFavorite(
     @Embedded
     val movie: RoomMovie,
-
-    @Relation(parentColumn = "id", entityColumn = "id")
-    val favoriteMovies: List<RoomMovieFavorites> = emptyList()
+    val movieId: Int?
 )

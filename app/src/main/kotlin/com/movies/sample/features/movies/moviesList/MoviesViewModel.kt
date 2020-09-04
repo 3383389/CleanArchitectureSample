@@ -16,8 +16,8 @@ import javax.inject.Inject
 class MoviesViewModel
 @Inject constructor(
     application: Application,
-    private val getLocalMovies: GetLocalMovies,
-    private val updateMovies: UpdateMovies,
+    private val getMovies: GetMovies,
+    private val loadMovies: LoadMovies,
     private val getFavoriteMovies: GetFavoriteMovies,
     private val addMovieToFavorites: AddMovieToFavorites,
     private val removeMovieFromFavorites: RemoveMovieFromFavorites
@@ -29,7 +29,7 @@ class MoviesViewModel
         emit(emptyList())
         // get movies from DB
         val result = when (state) {
-            MoviesFragment.STATE_MOVIES -> getLocalMovies.run(UseCase.None())
+            MoviesFragment.STATE_MOVIES -> getMovies.run(UseCase.None())
             MoviesFragment.STATE_MOVIES_FAVORITES -> getFavoriteMovies.run(UseCase.None())
             else -> throw IllegalStateException("MoviesViewModel wrong state")
         }
@@ -47,7 +47,7 @@ class MoviesViewModel
         viewModelScope.launch {
             showLoading()
             delay(1000) // increase server delay for testing UI
-            updateMovies(UseCase.None()) {
+            loadMovies(UseCase.None()) {
                 when (it) {
                     is Result.Error -> handleErrors(it) { loadMovies() }
                 }
