@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.movies.sample.R.id
 import com.movies.sample.R.layout
 import com.movies.sample.core.extension.inTransaction
-import kotlinx.android.synthetic.main.toolbar.toolbar
+import kotlinx.android.synthetic.main.toolbar.*
 
 /**
  * Base Activity class with helper methods for handling fragment transactions and back button
@@ -24,13 +24,17 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         (supportFragmentManager.findFragmentById(
-                id.fragmentContainer) as BaseFragment).onBackPressed()
+            id.fragmentContainer
+        ) as BaseFragment).onBackPressed()
         super.onBackPressed()
     }
 
     private fun addFragment(savedInstanceState: Bundle?) =
-            savedInstanceState ?: supportFragmentManager.inTransaction { add(
-                    id.fragmentContainer, fragment()) }
+        savedInstanceState ?: supportFragmentManager.inTransaction {
+            add(
+                id.fragmentContainer, fragment()
+            )
+        }
 
     abstract fun fragment(): BaseFragment
 }

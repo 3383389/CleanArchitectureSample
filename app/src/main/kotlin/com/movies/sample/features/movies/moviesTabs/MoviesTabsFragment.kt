@@ -3,7 +3,6 @@ package com.movies.sample.features.movies.moviesTabs
 import android.os.Bundle
 import android.view.View
 import com.movies.sample.R
-import com.movies.sample.core.extension.viewModel
 import com.movies.sample.core.navigation.Navigator
 import com.movies.sample.core.platform.BaseFragment
 import com.movies.sample.core.platform.BaseViewPagerAdapter

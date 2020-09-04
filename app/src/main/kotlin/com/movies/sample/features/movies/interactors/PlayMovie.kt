@@ -4,8 +4,8 @@ import android.content.Context
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.interactor.UseCase
 import com.movies.sample.core.navigation.Navigator
-import com.movies.sample.features.movies.interactors.PlayMovie.Params
 import com.movies.sample.features.movies.entities.MovieError
+import com.movies.sample.features.movies.interactors.PlayMovie.Params
 import javax.inject.Inject
 
 class PlayMovie

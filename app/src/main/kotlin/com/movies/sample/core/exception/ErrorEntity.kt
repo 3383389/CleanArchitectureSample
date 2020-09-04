@@ -1,6 +1,6 @@
 package com.movies.sample.core.exception
 
-sealed class ErrorEntity (open val message: String? = null) {
+sealed class ErrorEntity(open val message: String? = null) {
 
     class BadRequest(override val message: String? = null) : ErrorEntity(message)
 
@@ -11,5 +11,5 @@ sealed class ErrorEntity (open val message: String? = null) {
     object Unknown : ErrorEntity()
 
     /** * Extend this class for feature specific failures.*/
-    abstract class FeatureError: ErrorEntity()
+    abstract class FeatureError : ErrorEntity()
 }

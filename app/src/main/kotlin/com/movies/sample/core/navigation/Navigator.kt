@@ -4,15 +4,15 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.core.app.ActivityOptionsCompat
 import android.view.View
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import com.movies.sample.core.extension.empty
 import com.movies.sample.features.login.Authenticator
 import com.movies.sample.features.login.LoginActivity
-import com.movies.sample.features.movies.movieDetails.MovieDetailsActivity
 import com.movies.sample.features.movies.entities.MovieEntity
+import com.movies.sample.features.movies.movieDetails.MovieDetailsActivity
 import com.movies.sample.features.movies.moviesTabs.MoviesActivity
-import com.movies.sample.core.extension.empty
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,11 +32,15 @@ class Navigator
 
     private fun showMovies(context: Context) = context.startActivity(MoviesActivity.callingIntent(context))
 
-    fun showMovieDetails(activity: androidx.fragment.app.FragmentActivity, movie: MovieEntity, navigationExtras: Extras) {
+    fun showMovieDetails(
+        activity: androidx.fragment.app.FragmentActivity,
+        movie: MovieEntity,
+        navigationExtras: Extras
+    ) {
         val intent = MovieDetailsActivity.callingIntent(activity, movie)
         val sharedView = navigationExtras.transitionSharedElement
         val activityOptions = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(activity, *sharedView)
+            .makeSceneTransitionAnimation(activity, *sharedView)
         activity.startActivityForResult(intent, MoviesActivity.MOVIE_DETAILS_REQUEST_CODE, activityOptions.toBundle())
     }
 

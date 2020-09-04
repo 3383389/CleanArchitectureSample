@@ -1,8 +1,8 @@
 package com.movies.sample.features.movies
 
 import com.movies.sample.AndroidTest
-import com.movies.sample.core.extension.empty
 import com.movies.sample.core.exception.ErrorEntity
+import com.movies.sample.core.extension.empty
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.platform.NetworkHandler
 import com.movies.sample.features.movies.entities.MovieDetailsEntity
@@ -18,7 +18,6 @@ import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import org.amshove.kluent.shouldBeInstanceOf
 import org.amshove.kluent.shouldEqual
 import org.junit.Before
@@ -99,21 +98,6 @@ class MoviesRepositoryTest : AndroidTest() {
     }
 
     @Test
-    fun `movies service should return server error if no successful response`() {
-        runBlocking {
-            given { networkHandler.isConnected }.willReturn(true)
-            given { service.movies() }.willReturn(moviesResponse)
-            given(moviesResponse.await()).willThrow(NullPointerException("test"))
-
-            val movies = repository.loadMovies()
-
-            movies shouldBeInstanceOf Result::class.java
-            movies shouldBeInstanceOf Result.Error::class.java
-            (movies as Result.Error).error shouldBeInstanceOf ErrorEntity.UnknownServiceError::class.java
-        }
-    }
-
-    @Test
     fun `should return empty movie details by default`() {
         runBlocking {
             given { networkHandler.isConnected }.willReturn(true)
@@ -129,7 +113,7 @@ class MoviesRepositoryTest : AndroidTest() {
 
     @Test
     fun `should get movie details from service`() {
-        runBlockingTest {
+        runBlocking {
             given { networkHandler.isConnected }.willReturn(true)
             given(movieDetailsResponse.await()).willReturn(
                 RetrofitMovieDetails(
@@ -172,21 +156,6 @@ class MoviesRepositoryTest : AndroidTest() {
         movies shouldBeInstanceOf Result.Error::class.java
         (movies as Result.Error).error shouldBeInstanceOf ErrorEntity.Network::class.java
         verifyZeroInteractions(service)
-    }
-
-    @Test
-    fun `movie details service should return server error if no successful response`() {
-        runBlocking {
-            given { networkHandler.isConnected }.willReturn(true)
-            given(movieDetailsResponse.await()).willThrow(HttpException::class.java)
-            given { runBlocking { service.movieDetails(1) } }.willReturn(movieDetailsResponse)
-
-            val movies = repository.movieDetails(1)
-
-            movies shouldBeInstanceOf Result::class.java
-            movies shouldBeInstanceOf Result.Error::class.java
-            (movies as Result.Error).error shouldBeInstanceOf ErrorEntity.UnknownServiceError::class.java
-        }
     }
 
 }

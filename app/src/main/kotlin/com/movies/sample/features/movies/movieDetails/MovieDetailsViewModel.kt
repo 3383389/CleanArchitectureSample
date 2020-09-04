@@ -7,14 +7,10 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.movies.sample.core.interactor.Result
 import com.movies.sample.core.platform.BaseViewModel
-import com.movies.sample.features.movies.interactors.GetMovieDetails
-import com.movies.sample.features.movies.interactors.GetMovieDetails.Params
-import com.movies.sample.features.movies.interactors.PlayMovie
 import com.movies.sample.features.movies.entities.MovieDetailsEntity
 import com.movies.sample.features.movies.entities.MovieEntity
-import com.movies.sample.features.movies.interactors.RemoveMovieFromFavorites
-import com.movies.sample.features.movies.interactors.AddMovieToFavorites
-import com.movies.sample.features.movies.interactors.IsMovieFavorite
+import com.movies.sample.features.movies.interactors.*
+import com.movies.sample.features.movies.interactors.GetMovieDetails.Params
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

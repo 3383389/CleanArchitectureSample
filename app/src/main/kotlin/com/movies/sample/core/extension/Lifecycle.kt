@@ -3,7 +3,6 @@ package com.movies.sample.core.extension
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.movies.sample.core.exception.ErrorEntity
 import com.movies.sample.core.exception.ErrorWithAction
 
 fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) =
