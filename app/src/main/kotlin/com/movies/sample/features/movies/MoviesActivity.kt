@@ -1,4 +1,4 @@
-package com.movies.sample.features.movies.moviesTabs
+package com.movies.sample.features.movies
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,7 @@ import androidx.core.app.SharedElementCallback
 import com.movies.sample.R
 import com.movies.sample.core.platform.BaseActivity
 import com.movies.sample.features.movies.moviesList.MoviesFragment
+import com.movies.sample.features.movies.moviesTabs.MoviesTabsFragment
 import kotlinx.android.synthetic.main.fragment_movies_tabs.*
 
 
@@ -44,11 +45,15 @@ class MoviesActivity : BaseActivity() {
                     names?.clear()
                     sharedElements?.clear()
 
-                    listFragment?.getTransitionView(imageTransitionName!!, EXTRA_SHARED_IMAGE_NAME)?.let {
+                    listFragment?.getTransitionView(imageTransitionName!!,
+                        EXTRA_SHARED_IMAGE_NAME
+                    )?.let {
                         sharedElements?.put(imageTransitionName!!, it)
                         names?.add(imageTransitionName!!)
                     }
-                    listFragment?.getTransitionView(iconTransitionName!!, EXTRA_SHARED_ICON_NAME)?.let {
+                    listFragment?.getTransitionView(iconTransitionName!!,
+                        EXTRA_SHARED_ICON_NAME
+                    )?.let {
                         sharedElements?.put(iconTransitionName!!, it)
                         names?.add(iconTransitionName!!)
                     }

@@ -13,7 +13,7 @@ import com.movies.sample.core.platform.BaseFragment
 import com.movies.sample.features.movies.entities.MovieDetailsEntity
 import com.movies.sample.features.movies.entities.MovieEntity
 import com.movies.sample.features.movies.entities.MovieError
-import com.movies.sample.features.movies.moviesTabs.MoviesActivity
+import com.movies.sample.features.movies.MoviesActivity
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.toolbar.*
 import javax.inject.Inject

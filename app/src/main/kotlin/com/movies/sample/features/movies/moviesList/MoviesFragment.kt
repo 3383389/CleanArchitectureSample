@@ -11,7 +11,7 @@ import com.movies.sample.core.navigation.Navigator
 import com.movies.sample.core.platform.BaseFragment
 import com.movies.sample.features.movies.entities.MovieEntity
 import com.movies.sample.features.movies.entities.MovieError.ListNotAvailable
-import com.movies.sample.features.movies.moviesTabs.MoviesActivity
+import com.movies.sample.features.movies.MoviesActivity
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 import kotlinx.android.synthetic.main.row_movie.view.*
 import javax.inject.Inject

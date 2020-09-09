@@ -33,7 +33,7 @@
             android:label="@string/login_screen_title" />
 
         <activity
-            android:name="com.movies.sample.features.movies.moviesTabs.MoviesActivity"
+            android:name="com.movies.sample.features.movies.MoviesActivity"
             android:label="@string/movies_screen_title" />
 
         <activity

@@ -12,7 +12,7 @@ import com.movies.sample.features.login.Authenticator
 import com.movies.sample.features.login.LoginActivity
 import com.movies.sample.features.movies.entities.MovieEntity
 import com.movies.sample.features.movies.movieDetails.MovieDetailsActivity
-import com.movies.sample.features.movies.moviesTabs.MoviesActivity
+import com.movies.sample.features.movies.MoviesActivity
 import javax.inject.Inject
 import javax.inject.Singleton
 

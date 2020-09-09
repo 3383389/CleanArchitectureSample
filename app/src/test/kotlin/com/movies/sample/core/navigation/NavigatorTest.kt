@@ -3,7 +3,7 @@ package com.movies.sample.core.navigation
 import com.movies.sample.AndroidTest
 import com.movies.sample.features.login.Authenticator
 import com.movies.sample.features.login.LoginActivity
-import com.movies.sample.features.movies.moviesTabs.MoviesActivity
+import com.movies.sample.features.movies.MoviesActivity
 import com.movies.sample.shouldNavigateTo
 import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
