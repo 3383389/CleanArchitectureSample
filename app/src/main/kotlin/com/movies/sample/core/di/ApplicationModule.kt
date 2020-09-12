@@ -12,6 +12,7 @@ import com.movies.sample.features.movies.repository.MoviesRepositoryImpl
 import com.movies.sample.features.movies.repository.db.AppDatabase
 import com.movies.sample.features.movies.repository.db.MoviesDao
 import com.movies.sample.features.movies.repository.error.GeneralErrorHandlerImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -20,8 +21,21 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [ApplicationModule.Declarations::class])
 class ApplicationModule(private val application: Application) {
+
+    @Module
+    interface Declarations {
+
+        @Binds
+        @Singleton
+        fun provideMoviesRepository(repo: MoviesRepositoryImpl): MoviesRepository
+
+        @Binds
+        @Singleton
+        fun provideErrorHandler(handler: GeneralErrorHandlerImpl): ErrorHandler
+
+    }
 
     @Provides
     @Singleton
@@ -56,14 +70,6 @@ class ApplicationModule(private val application: Application) {
     fun provideMoviesDao(database: AppDatabase): MoviesDao {
         return database.moviesRepository()
     }
-
-    @Provides
-    @Singleton
-    fun provideMoviesRepository(repo: MoviesRepositoryImpl): MoviesRepository = repo
-
-    @Provides
-    @Singleton
-    fun provideErrorHandler(): ErrorHandler = GeneralErrorHandlerImpl()
 
     private fun createClient(): OkHttpClient {
         val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()

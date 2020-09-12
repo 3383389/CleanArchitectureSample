@@ -1,5 +1,7 @@
 package com.movies.sample.features.movies.moviesTabs
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import com.movies.sample.R
@@ -19,8 +21,8 @@ class MoviesTabsFragment : BaseFragment() {
 
     override fun layoutId() = R.layout.fragment_movies_tabs
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
         appComponent.inject(this)
     }
 

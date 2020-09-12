@@ -1,5 +1,6 @@
 package com.movies.sample.features.movies.moviesList
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
@@ -29,9 +30,13 @@ class MoviesFragment : BaseFragment() {
 
     override fun layoutId() = R.layout.fragment_movies_list
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        appComponent.inject(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
 
         moviesViewModel = viewModel(viewModelFactory) {
             observe(movies, ::renderMoviesList)

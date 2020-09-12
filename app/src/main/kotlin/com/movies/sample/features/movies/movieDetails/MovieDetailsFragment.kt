@@ -1,6 +1,7 @@
 package com.movies.sample.features.movies.movieDetails
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -27,9 +28,13 @@ class MovieDetailsFragment : BaseFragment() {
 
     override fun layoutId() = R.layout.fragment_movie_details
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        appComponent.inject(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
         activity?.let { movieDetailsAnimator.postponeEnterTransition(it) }
 
         movieDetailsViewModel = viewModel(viewModelFactory) {

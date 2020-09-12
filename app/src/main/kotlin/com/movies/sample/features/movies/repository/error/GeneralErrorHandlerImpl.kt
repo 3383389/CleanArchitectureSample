@@ -6,8 +6,9 @@ import com.movies.sample.core.exception.ErrorHandler
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.HttpURLConnection
+import javax.inject.Inject
 
-class GeneralErrorHandlerImpl : ErrorHandler {
+class GeneralErrorHandlerImpl @Inject constructor() : ErrorHandler {
 
     override fun getError(throwable: Throwable): ErrorEntity {
         Log.e(javaClass.name, "Error - ", throwable)
