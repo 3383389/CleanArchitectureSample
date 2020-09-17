@@ -16,7 +16,7 @@ class MoviesService
         return moviesApi.movies()
     }
 
-    override fun movieDetails(movieId: Int): Deferred<RetrofitMovieDetails?> {
+    override suspend fun movieDetails(movieId: Int): RetrofitMovieDetails? {
         return moviesApi.movieDetails(movieId)
     }
 }

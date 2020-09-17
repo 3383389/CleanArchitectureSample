@@ -63,7 +63,7 @@ class MoviesRepositoryImpl
             return Result.Error(ErrorEntity.Network)
         }
         return try {
-            val res = service.movieDetails(movieId).await()
+            val res = service.movieDetails(movieId)
             Result.Success(res?.toMovieDetails() ?: MovieDetailsEntity.empty())
         } catch (throwable: Throwable) {
             Result.Error(errorHandler.getError(throwable))

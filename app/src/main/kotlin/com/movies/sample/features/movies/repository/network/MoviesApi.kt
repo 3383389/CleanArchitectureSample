@@ -12,7 +12,7 @@ internal interface MoviesApi {
     fun movies(): Deferred<List<RetrofitMovie?>?>
 
     @GET(MOVIE_DETAILS)
-    fun movieDetails(@Path(PARAM_MOVIE_ID) movieId: Int): Deferred<RetrofitMovieDetails?>
+    suspend fun movieDetails(@Path(PARAM_MOVIE_ID) movieId: Int): RetrofitMovieDetails?
 
     companion object {
         private const val PARAM_MOVIE_ID = "movieId"

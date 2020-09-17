@@ -46,9 +46,6 @@ class MoviesRepositoryTest : AndroidTest() {
     @Mock
     private lateinit var moviesResponse: Deferred<List<RetrofitMovie>>
 
-    @Mock
-    private lateinit var movieDetailsResponse: Deferred<RetrofitMovieDetails?>
-
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
@@ -101,13 +98,11 @@ class MoviesRepositoryTest : AndroidTest() {
     fun `should return empty movie details by default`() {
         runBlocking {
             given { networkHandler.isConnected }.willReturn(true)
-            given(movieDetailsResponse.await()).willReturn(null)
-            given { service.movieDetails(1) }.willReturn(movieDetailsResponse)
+            given(service.movieDetails(1)).willReturn(null)
 
             val movieDetails = repository.movieDetails(1)
 
             movieDetails shouldEqual Result.Success(MovieDetailsEntity.empty())
-            verify(service).movieDetails(1)
         }
     }
 
@@ -115,15 +110,14 @@ class MoviesRepositoryTest : AndroidTest() {
     fun `should get movie details from service`() {
         runBlocking {
             given { networkHandler.isConnected }.willReturn(true)
-            given(movieDetailsResponse.await()).willReturn(
+            given(service.movieDetails(1)).willReturn(
                 RetrofitMovieDetails(
                     8, "title", String.empty(), String.empty(),
                     String.empty(), String.empty(), 0, String.empty()
                 )
             )
-            given(service.movieDetails(1)).willReturn(movieDetailsResponse)
 
-            val movieDetails = service.movieDetails(1).await()
+            val movieDetails = service.movieDetails(1)
 
             movieDetails shouldEqual
                     RetrofitMovieDetails(
