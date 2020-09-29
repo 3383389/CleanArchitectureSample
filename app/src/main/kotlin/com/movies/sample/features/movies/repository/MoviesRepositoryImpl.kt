@@ -2,6 +2,7 @@ package com.movies.sample.features.movies.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.asLiveData
 import com.movies.sample.core.exception.ErrorEntity
 import com.movies.sample.core.exception.ErrorHandler
 import com.movies.sample.core.interactor.Result
@@ -43,7 +44,7 @@ class MoviesRepositoryImpl
     override fun movies(): Result<LiveData<List<MovieEntity>>> {
         return try {
             // get liveData of movies and transform to app entity
-            val moviesLd = database.allMoviesWithFavorites()
+            val moviesLd = database.allMoviesWithFavorites().asLiveData()
             Result.Success(Transformations.map(moviesLd) { input ->
                 input.map {
                     MovieEntity(

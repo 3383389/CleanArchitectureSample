@@ -5,6 +5,7 @@ import androidx.room.*
 import com.movies.sample.features.movies.repository.dto.RoomMovie
 import com.movies.sample.features.movies.repository.dto.RoomMovieFavorites
 import com.movies.sample.features.movies.repository.dto.RoomMovieWithFavorite
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MoviesDao {
@@ -18,7 +19,7 @@ interface MoviesDao {
                 "FROM movies " +
                 "LEFT JOIN movies_favorite ON movies.id = movies_favorite.movieId"
     )
-    fun allMoviesWithFavorites(): LiveData<List<RoomMovieWithFavorite>>
+    fun allMoviesWithFavorites(): Flow<List<RoomMovieWithFavorite>>
 
     @Transaction
     @Query(
