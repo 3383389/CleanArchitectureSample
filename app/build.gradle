@@ -111,6 +111,7 @@ dependencies {
   implementation applicationDependencies.room
   implementation applicationDependencies.roomKtx
   implementation applicationDependencies.dbTesting
+  implementation applicationDependencies.espressoIdling
 
   //Unit/Integration tests dependencies
   testImplementation unitTestDependencies.kotlinTest
@@ -118,12 +119,17 @@ dependencies {
   testImplementation unitTestDependencies.junit
   testImplementation unitTestDependencies.mockito
   testImplementation unitTestDependencies.kluent
+  testImplementation unitTestDependencies.hamcrest
 
   //Acceptance tests dependencies
+  androidTestImplementation acceptanceTestDependencies.junit
+  androidTestImplementation acceptanceTestDependencies.archCore
   androidTestImplementation acceptanceTestDependencies.testRunner
   androidTestImplementation acceptanceTestDependencies.testRules
   androidTestImplementation acceptanceTestDependencies.espressoCore
+  androidTestImplementation acceptanceTestDependencies.espressoContrib
   androidTestImplementation acceptanceTestDependencies.espressoIntents
   androidTestImplementation acceptanceTestDependencies.androidAnnotations
+  androidTestImplementation acceptanceTestDependencies.hamcrest
 
 }

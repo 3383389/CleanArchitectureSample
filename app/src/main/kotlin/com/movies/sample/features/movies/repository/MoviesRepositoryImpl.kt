@@ -12,6 +12,7 @@ import com.movies.sample.features.movies.entities.MovieEntity
 import com.movies.sample.features.movies.repository.db.MoviesDao
 import com.movies.sample.features.movies.repository.dto.RetrofitMovie
 import com.movies.sample.features.movies.repository.network.MoviesService
+import com.movies.sample.features.movies.util.wrapEspressoIdlingResource
 import javax.inject.Inject
 
 class MoviesRepositoryImpl
@@ -23,94 +24,108 @@ class MoviesRepositoryImpl
 ) : MoviesRepository {
 
     override suspend fun loadMovies(): Result<Boolean> {
-        if (networkHandler.isConnected != true) {
-            return Result.Error(ErrorEntity.Network)
-        }
-        return try {
-            // fetch data from backend
-            val resultList = service.movies().await()?.map { movie ->
-                movie?.toRoomMovie() ?: RetrofitMovie.empty().toRoomMovie()
+        wrapEspressoIdlingResource {
+            if (networkHandler.isConnected != true) {
+                return Result.Error(ErrorEntity.Network)
             }
-            // save to local DB
-            if (resultList != null) {
-                database.insertMovies(resultList)
+            return try {
+                // fetch data from backend
+                val resultList = service.movies().await()?.map { movie ->
+                    movie?.toRoomMovie() ?: RetrofitMovie.empty().toRoomMovie()
+                }
+                // save to local DB
+                if (resultList != null) {
+                    database.insertMovies(resultList)
+                }
+                Result.Success(true)
+            } catch (throwable: Throwable) {
+                Result.Error(errorHandler.getError(throwable))
             }
-            Result.Success(true)
-        } catch (throwable: Throwable) {
-            Result.Error(errorHandler.getError(throwable))
         }
     }
 
     override fun movies(): Result<LiveData<List<MovieEntity>>> {
-        return try {
-            // get liveData of movies and transform to app entity
-            val moviesLd = database.allMoviesWithFavorites().asLiveData()
-            Result.Success(Transformations.map(moviesLd) { input ->
-                input.map {
-                    MovieEntity(
-                        it.movie.id,
-                        it.movie.poster,
-                        it.movieId != null
-                    )
-                }
-            })
-        } catch (throwable: Throwable) {
-            Result.Error(errorHandler.getError(throwable))
+        wrapEspressoIdlingResource {
+            return try {
+                // get liveData of movies and transform to app entity
+                val moviesLd = database.allMoviesWithFavorites().asLiveData()
+                Result.Success(Transformations.map(moviesLd) { input ->
+                    input.map {
+                        MovieEntity(
+                            it.movie.id,
+                            it.movie.poster,
+                            it.movieId != null
+                        )
+                    }
+                })
+            } catch (throwable: Throwable) {
+                Result.Error(errorHandler.getError(throwable))
+            }
         }
     }
 
     override suspend fun movieDetails(movieId: Int): Result<MovieDetailsEntity> {
-        if (networkHandler.isConnected != true) {
-            return Result.Error(ErrorEntity.Network)
-        }
-        return try {
-            val res = service.movieDetails(movieId)
-            Result.Success(res?.toMovieDetails() ?: MovieDetailsEntity.empty())
-        } catch (throwable: Throwable) {
-            Result.Error(errorHandler.getError(throwable))
+        wrapEspressoIdlingResource {
+            if (networkHandler.isConnected != true) {
+                return Result.Error(ErrorEntity.Network)
+            }
+            return try {
+                val res = service.movieDetails(movieId)
+                Result.Success(res?.toMovieDetails() ?: MovieDetailsEntity.empty())
+            } catch (throwable: Throwable) {
+                Result.Error(errorHandler.getError(throwable))
+            }
         }
     }
 
     override fun favoriteMovies(): Result<LiveData<List<MovieEntity>>> {
-        return try {
-            val moviesLd = database.allFavoriteMoviesLD()
-            Result.Success(Transformations.map(moviesLd) { input ->
-                input.map {
-                    MovieEntity(
-                        it.movie.id,
-                        it.movie.poster,
-                        it.movieId != null
-                    )
-                }
-            })
-        } catch (throwable: Throwable) {
-            Result.Error(errorHandler.getError(throwable))
+        wrapEspressoIdlingResource {
+            return try {
+                val moviesLd = database.allFavoriteMoviesLD()
+                Result.Success(Transformations.map(moviesLd) { input ->
+                    input.map {
+                        MovieEntity(
+                            it.movie.id,
+                            it.movie.poster,
+                            it.movieId != null
+                        )
+                    }
+                })
+            } catch (throwable: Throwable) {
+                Result.Error(errorHandler.getError(throwable))
+            }
         }
     }
 
     override fun addMovieToFavorites(movie: MovieEntity): Result<Boolean> {
-        return try {
-            database.insertFavoriteMovie(movie.toRoomFavorites())
-            Result.Success(true)
-        } catch (throwable: Throwable) {
-            Result.Error(errorHandler.getError(throwable))
+        wrapEspressoIdlingResource {
+            return try {
+                database.insertFavoriteMovie(movie.toRoomFavorites())
+                Result.Success(true)
+            } catch (throwable: Throwable) {
+                Result.Error(errorHandler.getError(throwable))
+            }
         }
     }
 
     override fun removeMovieFromFavorites(movieId: Int): Result<Boolean> {
-        return try {
-            database.deleteFavoriteMovie(movieId)
-            Result.Success(true)
-        } catch (throwable: Throwable) {
-            Result.Error(errorHandler.getError(throwable))
+        wrapEspressoIdlingResource {
+            return try {
+                database.deleteFavoriteMovie(movieId)
+                Result.Success(true)
+            } catch (throwable: Throwable) {
+                Result.Error(errorHandler.getError(throwable))
+            }
         }
     }
 
     override fun isFavorite(id: Int): Result<LiveData<Boolean>> {
-        return try {
-            Result.Success(database.isFavorite(id))
-        } catch (throwable: Throwable) {
-            Result.Error(errorHandler.getError(throwable))
+        wrapEspressoIdlingResource {
+            return try {
+                Result.Success(database.isFavorite(id))
+            } catch (throwable: Throwable) {
+                Result.Error(errorHandler.getError(throwable))
+            }
         }
     }
 }
